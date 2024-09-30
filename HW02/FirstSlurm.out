@@ -1,0 +1,84 @@
+Running task1 with n = 1024
+0.007694
+0.432275
+-8.35899
+Running task1 with n = 2048
+0.006051
+0.525531
+-24.1289
+Running task1 with n = 4096
+0.015912
+0.298858
+-0.329946
+Running task1 with n = 8192
+0.020081
+0.687672
+53.7138
+Running task1 with n = 16384
+0.05627
+-0.980667
+32.0619
+Running task1 with n = 32768
+0.121368
+0.223291
+0.188571
+Running task1 with n = 65536
+0.287577
+0.278329
+-76.8629
+Running task1 with n = 131072
+0.507948
+0.395075
+118.373
+Running task1 with n = 262144
+1.09843
+0.809234
+160.18
+Running task1 with n = 524288
+2.10178
+-0.216342
+7.85956
+Running task1 with n = 1048576
+4.15731
+-0.841222
+-390.659
+Running task1 with n = 2097152
+8.17888
+0.341062
+662.132
+Running task1 with n = 4194304
+12.8439
+-0.525643
+2470.12
+Running task1 with n = 8388608
+33.4913
+0.725802
+-3034.88
+Running task1 with n = 16777216
+52.0141
+0.226031
+4542.72
+Running task1 with n = 33554432
+97.8696
+0.620344
+-1280.56
+Running task1 with n = 67108864
+195.907
+0.192715
+3265.87
+Running task1 with n = 134217728
+391.703
+0.658748
+2857.7
+Running task1 with n = 268435456
+797.381
+0.744257
+-6177.23
+Running task1 with n = 536870912
+1576.21
+0.900406
+-14995.6
+Running task1 with n = 1073741824
+3152.55
+0.705902
+-2149.43
