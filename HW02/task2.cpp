@@ -69,7 +69,6 @@ int main(int argc, char *argv[])
     // iv) Prints out the time taken by your convolve function in milliseconds.
     // Durations are converted to milliseconds already thanks to std::chrono::duration_cast
     // Convert the calculated duration to a double using the standard library
-    
     duration_sec = std::chrono::duration_cast<duration<double, std::milli>>(end - start);
     cout << duration_sec.count() << "\n";
 
