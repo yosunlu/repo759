@@ -6,11 +6,7 @@ using namespace std;
 // Function to handle padding based on the given conditions
 int paddedValue(int i, int j, int n)
 {
-    if (i >= 0 && i < n && j >= 0 && j < n)
-    {
-        return 1; // Inside the original image boundaries
-    }
-    else if ((i >= 0 && i < n) || (j >= 0 && j < n))
+    if ((i >= 0 && i < n) || (j >= 0 && j < n))
     {
         return 1; // Edges (excluding corners)
     }
@@ -34,8 +30,8 @@ void convolve(const float *image, float *output, std::size_t n, const float *mas
                 // iterate the mask columns
                 for (size_t c = 0; c < m; ++c)
                 {
-                    int imgX = i + r - half_m;
-                    int imgY = j + c - half_m;
+                    size_t imgX = i + r - half_m;
+                    size_t imgY = j + c - half_m;
                     float fValue = (imgX >= 0 && imgX < n && imgY >= 0 && imgY < n) ? image[imgX * n + imgY] : paddedValue(imgX, imgY, n);
                     sum += mask[r * m + c] * fValue;
                 }

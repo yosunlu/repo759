@@ -7,7 +7,7 @@
 #include <ctime>
 #include <random>
 #include "matmul.h"
-#define N 10
+#define N 1024
 
 // Provide some namespace shortcuts
 using std::cout;
