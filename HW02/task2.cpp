@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
         {
             mask[i * m + j] = dist_1(gen);
         }
-    }
+    } 
 
     // iii) Applies the mask to image using your convolve function
     vector<float> output(n * n, 0.0f);

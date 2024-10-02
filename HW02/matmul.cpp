@@ -18,7 +18,7 @@ void mmul1(const double *A, const double *B, double *C, const unsigned int n)
                 // cout << i * n + j << "\n";
             }
         }
-    }
+    } 
 }
 // mmul2 should also have three for loops, but the two innermost loops should be swapped relative to mmul1
 // (such that, if your original iterators are from outer to inner (i,j,k), then they now become (i,k,j)).
