@@ -9,6 +9,7 @@ This repository contains the code and implementation for Assignment 2 of the ECE
 ## Analysis
 *Documentation and methods for timing and ramdonization can be found in the root folder* 
 ### Task1
+![截圖 2024-10-09 上午1 49 15](https://github.com/user-attachments/assets/a3b4947b-48ff-4c74-b8ae-c127bbc2d0ed)
 The plot shows the scaling analysis of the scan function in Task 1, with execution time increasing logarithmically as the input array size grows from 2^9 to 2^{30}. The straight-line trend in the log-log plot indicates a linear relationship between array size and execution time, suggesting that the scan function scales efficiently as the input size increases. Performance is consistent, with minimal overhead for small arrays and predictable increases for larger ones, demonstrating that the implementation effectively handles larger datasets without significant bottlenecks.
 
 ### Task3
