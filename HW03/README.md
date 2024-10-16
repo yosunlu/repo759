@@ -17,7 +17,8 @@ The task will be run as
 ``
 n is a positive integer for the dimension of the matrices, t is an integer in the range [1, 20] for the number of threads
 **Performance observation**
-The plot is run with value n = 1024, and value t = 1,2,··· ,20.
+The task is run with value n = 1024, and value t = 1,2,··· ,20.
+![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/33065bb3-c3c2-444a-b415-e2d81c46e341/4704fcf3-3651-424a-8d0a-ab804adfa934/image.png)
 With increasing thread count, the time to complete the matrix multiplication decreases. However, after a certain number of threads, the performance improvement becomes less significant due to the overhead of thread management and cache effects.
 
 ### 2D Convolutions
@@ -28,7 +29,8 @@ The task will be run as
 ``
 where n is a positive integer for matrix dimension
 **Performancse observation**
-The plot it result of running n = 1024, and t = 1,2,··· ,20
+The task it result of running n = 1024, and t = 1,2,··· ,20
+![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/33065bb3-c3c2-444a-b415-e2d81c46e341/f2979988-e692-4598-938f-e1c4f5466a85/image.png)
 - Initial Performance Gain: As the number of threads increases from 1 to around 8, there is a significant decrease in the time taken. This is expected, as parallelization allows more efficient processing of the matrix.
 - Diminishing Returns: After a certain point (around 8 threads), the reduction in time becomes less significant. This could be due to the overhead of managing multiple threads, communication between them, and potential contention for shared resources.
 - No Further Improvement: Beyond 16 threads, there is almost no reduction in execution time, and in some cases, the performance slightly degrades. This could be because the problem size may not be large enough to fully utilize all available threads, or due to the limitations of parallel scalability as the workload is distributed over too many threads.
@@ -43,6 +45,7 @@ where n is a positive integer for array length of array, t is an integer in the 
 
 **Performancse observation**
 First plot: The task is run with n = 10^6, value t = 8, and value ts = 2^1,2^2,··· ,2^10.
+![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/33065bb3-c3c2-444a-b415-e2d81c46e341/cbe49480-039c-418e-bea9-687c4aefe475/image.png)
 - Result: As the threshold (ts) increases from 2^1 to 2^10, performance improves, with faster execution times observed at higher thresholds.
 - Reduced Parallelism Overhead: Higher thresholds reduce the number of parallel tasks, lowering the overhead associated with creating and managing threads, leading to better performance.
 - Optimal Task Size: Increasing the threshold results in more coarse-grained tasks, which are more efficient to process. Small tasks generate excessive overhead, while larger tasks strike a balance between parallelism and efficiency.
@@ -50,7 +53,7 @@ First plot: The task is run with n = 10^6, value t = 8, and value ts = 2^1,2^2,�
 - Diminishing Returns: Performance gains from increasing the threshold stabilize after a certain point, as the benefits of reduced overhead and efficient serial sorting balance out with the loss of parallelism.
 
 Second plot: The task is run with value n = 10^6, value t = 1,2,··· ,20, and ts equals to the value that yields the best performance as you found in the plot of time vs. ts.
-
+![截圖 2024-10-16 下午3.37.17.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/33065bb3-c3c2-444a-b415-e2d81c46e341/63467d8e-f545-4070-99f5-82ff40d2bde3/%E6%88%AA%E5%9C%96_2024-10-16_%E4%B8%8B%E5%8D%883.37.17.png)
 - Result: The performance improves significantly when increasing from 1 to 2 threads, but beyond 2 threads, the execution time fluctuates without any clear linear trend or significant gains.
 - Initial Gain: The most dramatic performance improvement occurs between 1 and 2 threads, reducing execution time by nearly 50%, highlighting the benefit of parallelization for this range.
 - Fluctuation Beyond 2 Threads: After the initial gain, adding more threads does not result in consistent performance improvements. The time fluctuates between 450ms and 500ms, indicating that the overhead associated with managing and synchronizing threads offsets any potential gains from additional parallelism.
@@ -66,7 +69,7 @@ After cloning the repo, cd to the deliverbles directory
 
 `cd ../path_to_deliverbles`
 
-OpenMP must be intalled. g++ that comes with MAC does not support openMP. Several libraries have to be installed with bres. See this post for more information.
+OpenMP must be intalled. g++ that comes with MAC does not support openMP. Several libraries have to be installed with bres. See this [post](https://stackoverflow.com/questions/60005176/how-to-deal-with-clang-error-unsupported-option-fopenmp-on-travis) for more information.
 
 The command I used to compile is (using task1 as an example):
 ``
