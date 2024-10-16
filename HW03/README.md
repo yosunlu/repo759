@@ -85,6 +85,7 @@ After cloning the repo, cd to the deliverbles directory
 OpenMP must be intalled. g++ that comes with MAC does not support openMP. Several libraries have to be installed with bres. See this [post](https://stackoverflow.com/questions/60005176/how-to-deal-with-clang-error-unsupported-option-fopenmp-on-travis) for more information.
 
 The command I used to compile is (using task1 as an example):
+
 ``
 /opt/homebrew/opt/llvm/bin/clang++ matmul.cpp task1.cpp -Wall -O3 -std=c++17 -o task1 -fopenmp -isysroot $(xcrun --show-sdk-path) -L/opt/homebrew/opt/llvm/lib -L$(xcrun --show-sdk-path)/usr/lib -stdlib=libc++
 ``
