@@ -28,7 +28,7 @@ With increasing thread count, the time to complete the matrix multiplication dec
 The convolution function applies a 3×3 mask to a square matrix using parallel threads. The task involves testing different numbers of threads and measuring the time taken for the convolution operation.
 The task will be run as  
 
-`` bash
+`` 
  ./task2 n
 ``
 
@@ -44,12 +44,14 @@ The task it result of running n = 1024, and t = 1,2,··· ,20
 ### Parallel Merge Sort Multiplication
 The merge sort algorithm was implemented using OpenMP tasks. The function sorts an array of random integers by dividing it into smaller parts and applying recursive merge sort in parallel.
 The task will be run as
-`` bash
+
+`` 
  ./task3 n t ts
 ``
+
 where n is a positive integer for array length of array, t is an integer in the range [1, 20] for number of threads, ts is the threshold as the lower limit to make recursive calls in order to avoid the overhead of recursion/task scheduling when the input array has small size; under this limit, a serial sorting algorithm without recursion calls will be used
 
-**Performancse observation**
+**Performancse observation**  
 First plot: The task is run with n = 10^6, value t = 8, and value ts = 2^1,2^2,··· ,2^10.
 ![image](https://github.com/user-attachments/assets/b87a24d5-98f8-40a5-b1bb-87d10830c157)
 
