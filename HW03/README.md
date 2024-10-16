@@ -12,7 +12,7 @@ This folder contains the code and implementation for Assignment 3 of the ECE 759
 ### Matrix Multiplication
 The matrix multiplication function (mmul) is a parallel version of the mmul2 function from HW02. The performance of the function is measured for square matrices of size n×n, with varying numbers of threads (t). The execution time is recorded for different values of t and plotted to observe the scaling behavior.
 The task will be run as
-``
+`` bash
  ./task1 n t
 ``
 n is a positive integer for the dimension of the matrices, t is an integer in the range [1, 20] for the number of threads
@@ -25,7 +25,7 @@ With increasing thread count, the time to complete the matrix multiplication dec
 ### 2D Convolutions
 The convolution function applies a 3×3 mask to a square matrix using parallel threads. The task involves testing different numbers of threads and measuring the time taken for the convolution operation.
 The task will be run as
-``
+`` bash
  ./task2 n
 ``
 where n is a positive integer for matrix dimension
@@ -40,7 +40,7 @@ The task it result of running n = 1024, and t = 1,2,··· ,20
 ### Parallel Merge Sort Multiplication
 The merge sort algorithm was implemented using OpenMP tasks. The function sorts an array of random integers by dividing it into smaller parts and applying recursive merge sort in parallel.
 The task will be run as
-``
+`` bash
  ./task3 n t ts
 ``
 where n is a positive integer for array length of array, t is an integer in the range [1, 20] for number of threads, ts is the threshold as the lower limit to make recursive calls in order to avoid the overhead of recursion/task scheduling when the input array has small size; under this limit, a serial sorting algorithm without recursion calls will be used
