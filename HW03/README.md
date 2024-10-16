@@ -19,6 +19,7 @@ n is a positive integer for the dimension of the matrices, t is an integer in th
 **Performance observation**
 The task is run with value n = 1024, and value t = 1,2,··· ,20.
 ![image](https://github.com/user-attachments/assets/27b308ca-1774-46e4-bfb3-35f823210760)
+
 With increasing thread count, the time to complete the matrix multiplication decreases. However, after a certain number of threads, the performance improvement becomes less significant due to the overhead of thread management and cache effects.
 
 ### 2D Convolutions
@@ -31,6 +32,7 @@ where n is a positive integer for matrix dimension
 **Performancse observation**
 The task it result of running n = 1024, and t = 1,2,··· ,20
 ![image](https://github.com/user-attachments/assets/4799aee4-88f6-4f3c-bcb2-fb100e72d6c3)
+
 - Initial Performance Gain: As the number of threads increases from 1 to around 8, there is a significant decrease in the time taken. This is expected, as parallelization allows more efficient processing of the matrix.
 - Diminishing Returns: After a certain point (around 8 threads), the reduction in time becomes less significant. This could be due to the overhead of managing multiple threads, communication between them, and potential contention for shared resources.
 - No Further Improvement: Beyond 16 threads, there is almost no reduction in execution time, and in some cases, the performance slightly degrades. This could be because the problem size may not be large enough to fully utilize all available threads, or due to the limitations of parallel scalability as the workload is distributed over too many threads.
