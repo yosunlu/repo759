@@ -11,10 +11,12 @@ This folder contains the code and implementation for Assignment 3 of the ECE 759
 *Documentation and methods for timing and ramdonization can be found in the root folder* 
 ### Matrix Multiplication
 The matrix multiplication function (mmul) is a parallel version of the mmul2 function from HW02. The performance of the function is measured for square matrices of size n×n, with varying numbers of threads (t). The execution time is recorded for different values of t and plotted to observe the scaling behavior.
-The task will be run as
-`` bash
+The task will be run as  
+
+`` 
  ./task1 n t
 ``
+
 n is a positive integer for the dimension of the matrices, t is an integer in the range [1, 20] for the number of threads
 **Performance observation**
 The task is run with value n = 1024, and value t = 1,2,··· ,20.
@@ -24,10 +26,12 @@ With increasing thread count, the time to complete the matrix multiplication dec
 
 ### 2D Convolutions
 The convolution function applies a 3×3 mask to a square matrix using parallel threads. The task involves testing different numbers of threads and measuring the time taken for the convolution operation.
-The task will be run as
+The task will be run as  
+
 `` bash
  ./task2 n
 ``
+
 where n is a positive integer for matrix dimension
 **Performancse observation**
 The task it result of running n = 1024, and t = 1,2,··· ,20
