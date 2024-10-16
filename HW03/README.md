@@ -34,7 +34,7 @@ The task will be run as
 
 where n is a positive integer for matrix dimension
 **Performancse observation**
-The task it result of running n = 1024, and t = 1,2,··· ,20
+The task it result of running n = 1024, and t = 1,2,··· ,20.
 ![image](https://github.com/user-attachments/assets/4799aee4-88f6-4f3c-bcb2-fb100e72d6c3)
 
 - Initial Performance Gain: As the number of threads increases from 1 to around 8, there is a significant decrease in the time taken. This is expected, as parallelization allows more efficient processing of the matrix.
@@ -49,7 +49,7 @@ The task will be run as
  ./task3 n t ts
 ``
 
-where n is a positive integer for array length of array, t is an integer in the range [1, 20] for number of threads, ts is the threshold as the lower limit to make recursive calls in order to avoid the overhead of recursion/task scheduling when the input array has small size; under this limit, a serial sorting algorithm without recursion calls will be used
+where n is a positive integer for length of array, t is an integer in the range [1, 20] for number of threads, ts is the threshold as the lower limit to make recursive calls in order to avoid the overhead of recursion/task scheduling when the input array has small size; under this limit, a serial sorting algorithm without recursion calls will be used
 
 **Performancse observation**  
 First plot: The task is run with n = 10^6, value t = 8, and value ts = 2^1,2^2,··· ,2^10.
