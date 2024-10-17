@@ -65,7 +65,7 @@ First plot: The task is run with n = 10^6, value t = 8, and value ts = 2^1,2^2,�
 - Diminishing Returns: Performance gains from increasing the threshold stabilize after a certain point, as the benefits of reduced overhead and efficient serial sorting balance out with the loss of parallelism.
 
 Second plot: The task is run with value n = 10^6, value t = 1,2,··· ,20, and ts = 256.
-![image](https://github.com/user-attachments/assets/24a6da83-2f47-434c-a715-018b2d581054)
+![image](https://github.com/user-attachments/assets/ca00483d-e812-4957-9057-baed22011d38)
 
 - Result: The performance improves significantly when increasing from 1 to 6 threads, but beyond 6 threads, the execution time shows smaller improvements, eventually plateauing between 10 and 20 threads.
 - Initial Gain: The most dramatic performance improvement occurs between 1 and 6 threads, reducing execution time from 83.25 ms to 28.88 ms, highlighting the substantial benefit of parallelization during this range.
