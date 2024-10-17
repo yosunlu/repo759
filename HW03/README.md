@@ -17,8 +17,9 @@ The task will be run as
  ./task1 n t
 ``
 
-n is a positive integer for the dimension of the matrices, t is an integer in the range [1, 20] for the number of threads
-**Performance observation**
+n is a positive integer for the dimension of the matrices, t is an integer in the range [1, 20] for the number of threads  
+
+#### Performance observation
 The task is run with value n = 1024, and value t = 1,2,··· ,20.
 ![image](https://github.com/user-attachments/assets/27b308ca-1774-46e4-bfb3-35f823210760)
 
@@ -32,8 +33,9 @@ The task will be run as
  ./task2 n
 ``
 
-where n is a positive integer for matrix dimension
-**Performancse observation**
+where n is a positive integer for matrix dimension  
+
+#### Performancse observation
 The task it result of running n = 1024, and t = 1,2,··· ,20.
 ![image](https://github.com/user-attachments/assets/4799aee4-88f6-4f3c-bcb2-fb100e72d6c3)
 
@@ -51,7 +53,8 @@ The task will be run as
 
 where n is a positive integer for length of array, t is an integer in the range [1, 20] for number of threads, ts is the threshold as the lower limit to make recursive calls in order to avoid the overhead of recursion/task scheduling when the input array has small size; under this limit, a serial sorting algorithm without recursion calls will be used
 
-**Performancse observation**  
+#### Performancse observation
+
 First plot: The task is run with n = 10^6, value t = 8, and value ts = 2^1,2^2,··· ,2^10.
 ![image](https://github.com/user-attachments/assets/b87a24d5-98f8-40a5-b1bb-87d10830c157)
 
@@ -79,6 +82,7 @@ After cloning the repo, cd to the deliverbles directory
 OpenMP must be intalled. g++ that comes with MAC does not support openMP. Several libraries have to be installed with bres. See this [post](https://stackoverflow.com/questions/60005176/how-to-deal-with-clang-error-unsupported-option-fopenmp-on-travis) for more information.
 
 The command I used to compile is (using task1 as an example):
+
 ``
 /opt/homebrew/opt/llvm/bin/clang++ matmul.cpp task1.cpp -Wall -O3 -std=c++17 -o task1 -fopenmp -isysroot $(xcrun --show-sdk-path) -L/opt/homebrew/opt/llvm/lib -L$(xcrun --show-sdk-path)/usr/lib -stdlib=libc++
 ``
