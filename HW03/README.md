@@ -61,16 +61,13 @@ First plot: The task is run with n = 10^6, value t = 8, and value ts = 2^1,2^2,�
 - Efficient Serial Sorting for Small Inputs: At higher thresholds, smaller subarrays are handled by serial sorting algorithms, which are faster and more cache-efficient for small data sizes, contributing to improved performance.
 - Diminishing Returns: Performance gains from increasing the threshold stabilize after a certain point, as the benefits of reduced overhead and efficient serial sorting balance out with the loss of parallelism.
 
-Second plot: The task is run with value n = 10^6, value t = 1,2,··· ,20, and ts equals to the value that yields the best performance as you found in the plot of time vs. ts.
+Second plot: The task is run with value n = 10^6, value t = 1,2,··· ,20, and ts = 256.
 ![image](https://github.com/user-attachments/assets/24a6da83-2f47-434c-a715-018b2d581054)
 
-- Result: The performance improves significantly when increasing from 1 to 2 threads, but beyond 2 threads, the execution time fluctuates without any clear linear trend or significant gains.
-- Initial Gain: The most dramatic performance improvement occurs between 1 and 2 threads, reducing execution time by nearly 50%, highlighting the benefit of parallelization for this range.
-- Fluctuation Beyond 2 Threads: After the initial gain, adding more threads does not result in consistent performance improvements. The time fluctuates between 450ms and 500ms, indicating that the overhead associated with managing and synchronizing threads offsets any potential gains from additional parallelism.
-- Possible Bottlenecks: The fluctuating performance could be due to factors like memory contention, synchronization overhead, or diminishing returns from parallelism when increasing the number of threads, especially for smaller subarrays or tasks.
-
-This suggests that for this implementation, using around 2 to 4 threads yields the best performance, while increasing the number of threads beyond that point may not provide additional speedup due to parallel overhead.
-
+- Result: The performance improves significantly when increasing from 1 to 6 threads, but beyond 6 threads, the execution time shows smaller improvements, eventually plateauing between 10 and 20 threads.
+- Initial Gain: The most dramatic performance improvement occurs between 1 and 6 threads, reducing execution time from 83.25 ms to 28.88 ms, highlighting the substantial benefit of parallelization during this range.
+- Fluctuation Beyond 10 Threads: After 10 threads, adding more threads results in diminishing returns, with execution times stabilizing around 18-20 ms. The improvements beyond 10 threads are minimal and do not provide significant gains, indicating the overhead from managing additional threads.
+- Possible Bottlenecks: The fluctuating performance could be attributed to factors like memory contention, synchronization overhead, or diminishing returns from parallelism, especially for smaller subarrays. As more threads are added beyond 10, the overhead of task scheduling and memory access contention begins to offset the gains from parallel execution.
 
 ## How to run
 *These tasks can be run on non-euler machines.*

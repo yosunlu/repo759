@@ -59,20 +59,14 @@ void parallel_merge_sort(int *arr, int *temp, std::size_t left, std::size_t righ
         // Find the middle point
         std::size_t mid = left + (right - left) / 2;
 
-        // Parallelize the sorting of the left and right halves if size exceeds threshold
-#pragma omp parallel sections
-        {
-#pragma omp section
-            {
-                // Sort the first half
-                parallel_merge_sort(arr, temp, left, mid, threshold);
-            }
-#pragma omp section
-            {
-                // Sort the second half
-                parallel_merge_sort(arr, temp, mid + 1, right, threshold);
-            }
-        }
+        // Create parallel tasks for sorting the two halves
+
+#pragma omp task // Task for the left half
+        parallel_merge_sort(arr, temp, left, mid, threshold);
+#pragma omp task // Task for the left half
+        parallel_merge_sort(arr, temp, mid + 1, right, threshold);
+
+        #pragma omp taskwait // Ensure both tasks are finished before merging
 
         // Merge the sorted halves
         merge(arr, temp, left, mid, right);
@@ -80,7 +74,7 @@ void parallel_merge_sort(int *arr, int *temp, std::size_t left, std::size_t righ
 }
 
 // This function does a merge sort on the input array "arr" of length n
-// "threshold" is the lower limit of array size where your function would 
+// "threshold" is the lower limit of array size where your function would
 // start making parallel recursive calls. If the size of array goes below
 // the threshold, a serial sort algorithm will be used to avoid overhead
 // of task scheduling
@@ -90,8 +84,12 @@ void msort(int *arr, const std::size_t n, const std::size_t threshold)
     // Temporary array for merging
     int *temp = new int[n];
 
-    // Start the parallel merge sort
-    parallel_merge_sort(arr, temp, 0, n - 1, threshold);
+#pragma omp parallel
+    {
+#pragma omp single
+        // Start the parallel merge sort
+        parallel_merge_sort(arr, temp, 0, n - 1, threshold);
+    }
 
     // Free the temporary array
     delete[] temp;
