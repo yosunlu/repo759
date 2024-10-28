@@ -63,7 +63,7 @@ void parallel_merge_sort(int *arr, int *temp, std::size_t left, std::size_t righ
 
 #pragma omp task // Task for the left half
         parallel_merge_sort(arr, temp, left, mid, threshold);
-#pragma omp task // Task for the left half
+// #pragma omp task // Task for the left half
         parallel_merge_sort(arr, temp, mid + 1, right, threshold);
 
         #pragma omp taskwait // Ensure both tasks are finished before merging
