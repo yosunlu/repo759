@@ -17,6 +17,7 @@ using std::chrono::high_resolution_clock;
 int main(int argc, char *argv[])
 {
     // Ensure the program receives exactly one command-line argument
+    // n is the dimension of the matrices; m is number of threads
     if (argc != 3)
     {
         std::cerr << "Usage: ./task2 n m";
