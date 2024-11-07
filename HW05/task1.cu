@@ -1,5 +1,5 @@
 #include <cuda.h>
-#include <stdio.h>
+#include <iostream>
 
 __global__ void factorialKernal(){
     
