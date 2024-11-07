@@ -15,6 +15,7 @@ int main(){
 
     factorialKernal<<<1, 8>>>();
     cudaDeviceSynchronize();
+    std::cout << "test" << endl;
 
     return 1; 
 
