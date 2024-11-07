@@ -17,8 +17,9 @@ using std::chrono::high_resolution_clock;
 int main(int argc, char *argv[])
 {
     // Ensure the program receives exactly 3 command-line argument
-    // n is a positive integer for array length, t is an integer in the range [1, 20], ts is the
-    // threshold as the lower limit to make recursive calls in order to avoid the overhead of recursion/task scheduling when the input array has small size;
+    // n is a positive integer for array length
+    // t is an integer in the range [1, 20]
+    // ts is the threshold as the lower limit to make recursive calls in order to avoid the overhead of recursion/task scheduling when the input array has small size;
     // under this limit, a serial sorting algorithm without recursion calls will be used
 
     if (argc != 4)
