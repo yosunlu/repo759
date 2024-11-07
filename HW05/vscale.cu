@@ -2,9 +2,8 @@
 
 __global__ void vscale(const float *a, float *b, unsigned int n){
 
-    // int index = blockIdx.x * blockDim.x + threadIdx.x; 
+    int index = blockIdx.x * blockDim.x + threadIdx.x; 
     for(int i = 0; i < n; ++i){
-        b[i] *= a[i];
+        b[index] *= a[index];
     }
-    
 }
