@@ -13,8 +13,10 @@ __global__ void factorialKernal(){
 
 int main(){
 
+    printf("test begin");
     factorialKernal<<<1, 8>>>();
     cudaDeviceSynchronize();
+    printf("test end");
     
     return 0; 
 
