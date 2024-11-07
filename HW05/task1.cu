@@ -16,8 +16,7 @@ int main(){
     factorialKernal<<<1, 8>>>();
     cudaDeviceSynchronize();
     
-
-    return 1; 
+    return 0; 
 
 }
 
