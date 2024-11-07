@@ -25,7 +25,7 @@ int main(){
     // Launches a kernel with 2 blocks, each block having 8 threads.
     const int numBlocks = 2;
     const int numThreads = 8;
-    kernel<<<numBlocks, numThreads>>>(d, a); 
+    kernel<<<numBlocks, numThreads>>>(dA, a); 
     cudaDeviceSynchronize();
 
     // Copies back the data stored in the device array dA into a host array called hA
