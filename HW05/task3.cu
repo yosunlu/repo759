@@ -65,14 +65,14 @@ int main(int argc, char *argv[]) {
     cudaEventElapsedTime(&ms, start, stop);
 
     // Print the amount of time taken to execute the kernel in milliseconds
-    printf("Kernel execution time: %f ms\n", ms);
+    printf("%f\n", ms);
 
     // Copy the result from device back to host
     cudaMemcpy(b, d_b, n * sizeof(float), cudaMemcpyDeviceToHost);
 
     // Print the first and last elements of the resulting array
-    printf("First element: %f\n", b[0]);
-    printf("Last element: %f\n", b[n - 1]);
+    printf("%f\n", b[0]);
+    printf("%f\n", b[n - 1]);
 
     // Free device and host memory
     cudaFree(d_a);
