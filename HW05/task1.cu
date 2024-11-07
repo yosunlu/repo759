@@ -1,5 +1,5 @@
 #include <cuda.h>
-#include <iostream>
+#include <stdio.h>
 
 __global__ void factorialKernal(){
     
@@ -15,7 +15,6 @@ int main(){
 
     factorialKernal<<<1, 8>>>();
     cudaDeviceSynchronize();
-    std::cout << "test" << endl;
 
     return 1; 
 
