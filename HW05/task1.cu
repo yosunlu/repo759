@@ -4,10 +4,10 @@
 __global__ void factorialKernal(){
     
     int factorial = 1;
-    for(int i = 1; i <= threadId.x; ++i){
+    for(int i = 1; i <= threadIdx.x.x; ++i){
         factorial *= i; 
     }
-    std::prinf("%d!=%d\n", threadId.x, factorial);
+    std::printf("%d!=%d\n", threadIdx.x.x, factorial);
 
 }
 
