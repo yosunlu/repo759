@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
     cudaEventElapsedTime(&ms, start, stop);
 
     // Print the amount of time taken to execute the kernel in milliseconds
-    printf("%f\n", ms);
+    printf("time taken: %f\n", ms);
 
     // Copy the result from device back to host
     cudaMemcpy(b, d_b, n * sizeof(float), cudaMemcpyDeviceToHost);
