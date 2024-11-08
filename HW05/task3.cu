@@ -5,12 +5,6 @@
 #include <random>
 #include <cuda_runtime.h>
 
-// Provide some namespace shortcuts
-using std::cout;
-using std::vector;
-using std::chrono::duration;
-using std::chrono::high_resolution_clock;
-
 int main(int argc, char *argv[]) {
 
     if (argc != 2) {
@@ -27,9 +21,13 @@ int main(int argc, char *argv[]) {
     std::uniform_real_distribution<float> dist(-10.0f, 10.0f);
     std::uniform_real_distribution<float> dist1(0.0f, 1.0f);
 
+    if(n == 29){
+        printf("test 29");
+    }
+
     // Allocate memory for host and device arrays
     float *a, *b, *d_a, *d_b;
-    cudaMallocHost(&a, n * sizeof(float));  // Pinned host memory
+    cudaMallocHost(&a, n * sizeof(float));
     cudaMallocHost(&b, n * sizeof(float));
     cudaMalloc((void**)&d_a, n * sizeof(float));
     cudaMalloc((void**)&d_b, n * sizeof(float));
