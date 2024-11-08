@@ -21,16 +21,31 @@ int main(int argc, char *argv[]) {
     std::uniform_real_distribution<float> dist(-10.0f, 10.0f);
     std::uniform_real_distribution<float> dist1(0.0f, 1.0f);
 
-    if(n == (1<<29)){
-        printf("test 29");
-    }
 
     // Allocate memory for host and device arrays
     float *a, *b, *d_a, *d_b;
-    cudaMallocHost(&a, n * sizeof(float));
-    cudaMallocHost(&b, n * sizeof(float));
-    cudaMalloc((void**)&d_a, n * sizeof(float));
-    cudaMalloc((void**)&d_b, n * sizeof(float));
+    if (cudaMallocHost(&a, n * sizeof(float)) != cudaSuccess) {
+        std::cerr << "Error allocating pinned memory for array a on host\n";
+        return 1;
+    }
+    if (cudaMallocHost(&b, n * sizeof(float)) != cudaSuccess) {
+        std::cerr << "Error allocating pinned memory for array b on host\n";
+        cudaFreeHost(a);  // Free previously allocated memory
+        return 1;
+    }
+    if (cudaMalloc((void**)&d_a, n * sizeof(float)) != cudaSuccess) {
+        std::cerr << "Error allocating memory for array d_a on device\n";
+        cudaFreeHost(a);
+        cudaFreeHost(b);
+        return 1;
+    }
+    if (cudaMalloc((void**)&d_b, n * sizeof(float)) != cudaSuccess) {
+        std::cerr << "Error allocating memory for array d_b on device\n";
+        cudaFreeHost(a);
+        cudaFreeHost(b);
+        cudaFree(d_a);
+        return 1;
+    }
 
     // Fill host arrays with random values
     for (size_t i = 0; i < n; ++i) {
