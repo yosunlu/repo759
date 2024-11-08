@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
     std::uniform_real_distribution<float> dist(-10.0f, 10.0f);
     std::uniform_real_distribution<float> dist1(0.0f, 1.0f);
 
-    if(n == 29){
+    if(n == 2**29){
         printf("test 29");
     }
 
