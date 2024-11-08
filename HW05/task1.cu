@@ -4,19 +4,17 @@
 __global__ void factorialKernel(){
     
     int factorial = 1;
-    for(size_t i = 1; i <= threadIdx.x; ++i){
+    for(size_t i = 1; i <= threadIdx.x + 1 ; ++i){
         factorial *= i; 
     }
-    printf("%d!=%d\n", threadIdx.x, factorial);
+    printf("%d!=%d\n", threadIdx.x + 1, factorial);
 
 }
 
 int main(){
 
-    printf("test begin");
     factorialKernel<<<1, 8>>>();
     cudaDeviceSynchronize();
-    printf("test end");
     
     return 0; 
 

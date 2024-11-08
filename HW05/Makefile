@@ -1,6 +1,8 @@
-push:
-	git add .  
-	git commit -m "update task1" 
-	git push
-chmod:
-	chmod +x task1.sh
+task1:
+	sbatch ./scripts/task1.sh
+
+task2:
+	sbatch ./scripts/task2.sh
+
+task3:
+	sbatch ./scripts/task3.sh

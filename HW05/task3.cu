@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
         cudaFreeHost(a);  // Free previously allocated memory
         return 1;
     }
-    if (cudaMalloc((void**)&d_a, n * si:qzeof(float)) != cudaSuccess) {
+    if (cudaMalloc((void**)&d_a, n * sizeof(float)) != cudaSuccess) {
         std::cerr << "Error allocating memory for array d_a on device\n";
         cudaFreeHost(a);
         cudaFreeHost(b);
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
     cudaEventElapsedTime(&ms, start, stop);
 
     // Print the amount of time taken to execute the kernel in milliseconds
-    printf("time taken: %f\n", ms);
+    printf("%f\n", ms);
 
     // Copy the result from device back to host
     cudaMemcpy(b, d_b, n * sizeof(float), cudaMemcpyDeviceToHost);
@@ -86,6 +86,7 @@ int main(int argc, char *argv[]) {
     // Print the first and last elements of the resulting array
     printf("%f\n", b[0]);
     printf("%f\n", b[n - 1]);
+    printf("\n");
 
     // Free device and host memory
     cudaFree(d_a);

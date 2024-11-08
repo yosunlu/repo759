@@ -37,6 +37,7 @@ int main(){
     for(int i = 0; i < numElems; ++i){
         printf("%d ", hostArray[i]); 
     }
+    printf("\n");
     
     // Free device memory
     cudaFree(dA);
