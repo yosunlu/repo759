@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
         cudaFreeHost(a);  // Free previously allocated memory
         return 1;
     }
-    if (cudaMalloc((void**)&d_a, n * sizeof(float)) != cudaSuccess) {
+    if (cudaMalloc((void**)&d_a, n * si:qzeof(float)) != cudaSuccess) {
         std::cerr << "Error allocating memory for array d_a on device\n";
         cudaFreeHost(a);
         cudaFreeHost(b);
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     cudaMemcpy(d_b, b, n * sizeof(float), cudaMemcpyHostToDevice);
 
     // Kernel execution configuration
-    int numThreadsPerBlock = 512;
+    int numThreadsPerBlock = 16;
     int numBlocks = (n + numThreadsPerBlock - 1) / numThreadsPerBlock;
 
     // Set up CUDA events for timing
