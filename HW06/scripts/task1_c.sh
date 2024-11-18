@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH --job-name=task1
+#SBATCH --job-name=task1_c
 #SBATCH -p instruction
 #SBATCH --ntasks=1 --cpus-per-task=2
 #SBATCH --time=0-00:10:00
