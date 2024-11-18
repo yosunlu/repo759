@@ -12,3 +12,7 @@ pull:
 task1:
 	chmod +x ./scripts/task1.sh
 	sbatch ./scripts/task1.sh
+
+output1:
+	cat ./output/task1.err
+	cat ./output/task1.out

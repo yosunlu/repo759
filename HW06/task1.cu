@@ -1,4 +1,5 @@
 #include "matmul.cuh"
+#include <cuda.h>
 #include <chrono>
 #include <iostream>
 #include <cstdlib>
@@ -25,7 +26,7 @@ int main(int argc, char *argv[])
     std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
 
     // Allocate memory for host and device arrays
-    float *h_a, *h_, h_c, *d_a, *d_b, *d_c;
+    float *h_a, *h_b, h_c, *d_a, *d_b, *d_c;
     if (cudaMallocHost(&h_a, size * sizeof(float)) != cudaSuccess)
     {
         std::cerr << "Error allocating pinned memory for array h_a on host\n";
