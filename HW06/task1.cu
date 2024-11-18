@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     cudaEventRecord(start);
 
     // call the matmul function
-    matmul(d_a, d_b, d_c, n);
+    matmul(d_a, d_b, d_c, n, threads_per_block);
 
     cudaEventRecord(stop);
     cudaEventSynchronize(stop);

@@ -10,8 +10,11 @@ pull:
 	git pull
 
 task1:
+	git reset --hard HEAD
+	git pull
 	chmod +x ./scripts/task1.sh
 	sbatch ./scripts/task1.sh
+
 
 output1:
 	cat ./output/task1.err
