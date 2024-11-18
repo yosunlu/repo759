@@ -7,8 +7,8 @@
 #SBATCH --error="./output/task1.err"
 #SBATCH --gres=gpu:1
 
-# Add the output folder if not already exists
-mkdir -p output
+rm -rf output
+mkdir output
 
 module load nvidia/cuda/11.8.0
 module load gcc/9.4.0

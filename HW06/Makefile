@@ -10,15 +10,11 @@ pull:
 	git pull
 
 task1:
-	git reset --hard HEAD
-	git pull
 	chmod +x ./scripts/task1.sh
 	sbatch ./scripts/task1.sh
 
 
 task1_c:
-	git reset --hard HEAD
-	git pull
 	chmod +x ./scripts/task1_c.sh
 	sbatch ./scripts/task1_c.sh
 
