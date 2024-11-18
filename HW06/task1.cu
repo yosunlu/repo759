@@ -1,5 +1,4 @@
 #include "matmul.cuh"
-#include "vscale.cuh"
 #include <chrono>
 #include <iostream>
 #include <cstdlib>
