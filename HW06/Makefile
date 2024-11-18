@@ -16,6 +16,14 @@ task1:
 	sbatch ./scripts/task1.sh
 
 
+task1_c:
+	git reset --hard HEAD
+	git pull
+	chmod +x ./scripts/task1_c.sh
+	sbatch ./scripts/task1_c.sh
+
+
+
 output1:
 	cat ./output/task1.err
 	cat ./output/task1.out
