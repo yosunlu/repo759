@@ -63,15 +63,14 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    // Initialize allocated memory to avoid garbage values
-    std::fill(h_i, h_i + 10, 0.0f);
-    std::fill(h_m, h_m + 5, 0.0f);
-    std::fill(h_o, h_o + 10, 0.0f);
-
     // Fill host image with  values
     for (size_t i = 0; i < 10; ++i)
     {
         h_i[i] = i;
+    }
+
+    for (size_t i = 0; i < 5; ++i) {
+    h_m[i] = 0.0f;
     }
 
     // Fill host mask with  values
