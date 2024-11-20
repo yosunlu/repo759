@@ -1,4 +1,4 @@
-#include "stencil.cu"
+#include "stencil.cuh"
 #include <cuda.h>
 #include <chrono>
 #include <iostream>
