@@ -8,7 +8,7 @@
 #SBATCH --gres=gpu:1
 
 rm -rf output
-mkdir output
+mkdir -p output
 
 module load nvidia/cuda/11.8.0
 module load gcc/9.4.0
