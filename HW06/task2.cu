@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
     cudaEventRecord(start);
 
     // call the stencil function
-    stencil(d_i, d_m, d_o, 10, 2, 5);
+    stencil(d_i, d_m, d_o, n, R, threads_per_block);
 
     cudaEventRecord(stop);
     cudaEventSynchronize(stop);
