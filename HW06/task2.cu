@@ -78,10 +78,11 @@ int main(int argc, char *argv[])
     // Copy data from host to device
     cudaMemcpy(d_i, h_i, 10 * sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(d_m, h_m, 5 * sizeof(float), cudaMemcpyHostToDevice);
+
     
     for (size_t i = 0; i < 5; ++i)
     {
-        std::cout << d_m[i] << std::endl; 
+        std::cout << h_m[i] << std::endl; 
     }
 
     // call the stencil function
