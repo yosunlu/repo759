@@ -33,16 +33,18 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
 
     // Thread-local index
     int local_idx = threadIdx.x;
+
     int block_idx = blockIdx.x;
 
     // Load mask into shared memory (handled by the first threads)
     // say R == 2, then mask has 2 * 2 + 1 elements; only need the first 5 threads of the block to load mask from global to shared
     if (local_idx < 2 * R + 1)
     {
+        printf("inside if");
         shared_mask[local_idx] = mask[local_idx];
         
     }
-    __syncthreads();
+
     printf("currently in block: %d, local thread: %d, global thread: %d, mask: %d\n", block_idx, local_idx, global_idx, shared_mask[local_idx]);
     
     
@@ -83,7 +85,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     // }
 
     // // Synchronize again to ensure all threads finish before returning
-    // __syncthreads();
+    __syncthreads();
 }
 
 // Makes one call to stencil_kernel with threads_per_block threads per block.
