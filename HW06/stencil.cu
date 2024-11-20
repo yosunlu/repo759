@@ -45,6 +45,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     // load left halo
     
     if (local_idx == 0){
+        printf("local index: %d\n", local_idx);
         int shared_image_idx = 0;
         for(int i = R; i > 0; ++i){
             int left_idx = global_idx - i;
