@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
     for (size_t i = 0; i < size; ++i)
     {
         h_a[i] = dist(gen);
+        std::cout << h_a[i] << std::endl; 
         h_b[i] = dist(gen);
     }
 

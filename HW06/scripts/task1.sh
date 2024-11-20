@@ -3,8 +3,8 @@
 #SBATCH -p instruction
 #SBATCH --ntasks=1 --cpus-per-task=2
 #SBATCH --time=0-00:10:00
-#SBATCH --output="./output/task1.out"
-#SBATCH --error="./output/task1.err"
+#SBATCH --output="./task1.out"
+#SBATCH --error="./task1.err"
 #SBATCH --gres=gpu:1
 
 rm -rf output

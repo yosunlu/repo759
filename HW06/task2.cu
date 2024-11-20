@@ -69,10 +69,6 @@ int main(int argc, char *argv[])
         h_i[i] = i;
     }
 
-    for (size_t i = 0; i < 5; ++i) {
-    h_m[i] = 0.0f;
-    }
-
     // Fill host mask with  values
     for (size_t i = 0; i < 5; ++i)
     {
