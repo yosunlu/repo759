@@ -27,30 +27,48 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
 
     // Shared memory allocation for mask and the image block
     extern __shared__ float shared_mem[];
-    // devide the shared array
+    // devide the shared memory array
     float *shared_mask = shared_mem;
     float *shared_image = &shared_mem[2 * R + 1];
 
-    // Thread-local index
     int local_idx = threadIdx.x;
-
     int block_idx = blockIdx.x;
 
     // Load mask into shared memory (handled by the first threads)
-    // say R == 2, then mask has 2 * 2 + 1 elements; only need the first 5 threads of the block to load mask from global to shared
     if (local_idx < 2 * R + 1)
     {
         shared_mask[local_idx] = mask[local_idx];
     }
-
     printf("currently in block: %d, local thread: %d, global thread: %d, mask: %f\n", block_idx, local_idx, global_idx, shared_mask[local_idx]);
     
-
     // Load corresponding image elements into shared memory
-    // say blockDim == 5 (each block has 7 threads) and R == 2; halo_left for the threads in 0th block is -2
-    // int halo_left = blockIdx.x * blockDim.x - R;
-    // // for the first 2 threads in the 0th bock, shared_image_idx < 0
-    // int shared_image_idx = halo_left + local_idx;
+    // load left halo
+    
+    if (local_idx == 0){
+        int shared_image_idx = 0;
+        for(int i = R; i > 0; ++i){
+            int left_idx = global_idx - i;
+            shared_image[shared_image_idx] = left_idx < 0 ? 1.0f : image[global_idx];
+            printf("shared_image_idx[%d]: %f\n", left_idx, shared_image[shared_image_idx]);
+            shared_image_idx++
+        }
+    }
+
+    shared_image[R + local_idx] = image[global_idx];
+    printf("shared_image_idx[%d]: %f\n", R + local_idx, shared_image[R + local_idx]);
+
+    // load right halo
+    if (local_idx == block_idx - 1){
+        shared_image_idx = block_idx + R;
+        for(int i = 1; i <= R; ++i){
+            int right_idx = global_idx + i;
+            shared_image[shared_image_idx] = right_idx >= n ? 1.0f : image[global_idx];
+            printf("shared_image_idx[%d]: %f\n", right_idx, shared_image[shared_image_idx]);
+            shared_image_idx++
+        }
+    }
+
+    __syncthreads();
 
     // if (shared_image_idx < 0 || shared_image_idx >= n)
     // {
@@ -63,7 +81,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     // }
 
     // // Synchronize all threads in the block after loading shared memory
-    // __syncthreads();
+    
 
     // // Compute the stencil operation for this thread if it's within bounds
     // if (global_idx < n)
@@ -105,13 +123,6 @@ __host__ void stencil(const float *image,
     // (2 * R + 1) * sizeof(float) is the size of the mask
     // (threads_per_block + 2 * R) is the element needed 
     unsigned int shared_size = (2 * R + 1) * sizeof(float) + (threads_per_block + 2 * R) * sizeof(float);
-
-    float temp_mask[5]; // Temporary buffer on the host
-    cudaMemcpy(temp_mask, mask, 5 * sizeof(float), cudaMemcpyDeviceToHost);
-    for (int i = 0; i < 5; ++i)
-    {
-        std::cout << temp_mask[i] << std::endl;
-    }
 
     // Launch the kernel with the calculated configuration
     stencil_kernel<<<num_blocks, threads_per_block, shared_size>>>(image, mask, output, n, R);
