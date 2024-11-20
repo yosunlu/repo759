@@ -115,9 +115,8 @@ int main(int argc, char *argv[])
 
     // Copy data from device back to host
     cudaMemcpy(h_o, d_o, n * sizeof(float), cudaMemcpyDeviceToHost);
-    for (int i = 0; i < 10; ++i)
  
-     // Print the last element of the output matrix.
+    // Print the last element of the output matrix.
     printf("%f\n", h_o[n - 1]);
 
     // Print the amount of time taken to execute the kernel in milliseconds
@@ -130,6 +129,5 @@ int main(int argc, char *argv[])
     cudaFreeHost(h_i);
     cudaFreeHost(h_m);
     cudaFreeHost(h_o);
-
 
 }
