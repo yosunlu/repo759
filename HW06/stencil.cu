@@ -83,7 +83,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
         // }
     }
     if (global_idx == 0){
-        printf(global_idx);
+        printf("%d", global_idx);
     }
 
     // Write the result to global memory
