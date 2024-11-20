@@ -43,13 +43,12 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     
     // Load corresponding image elements into shared memory
     // load left halo
-    
     if (local_idx == 0){
         int shared_image_idx = 0;
         for(int i = R; i > 0; --i){
             int left_idx = global_idx - i;
             shared_image[shared_image_idx] = left_idx < 0 ? 1.0f : image[left_idx];
-            if(blockIdx.x == 1) printf("block: %d, shared_image_idx[%d]: %f\n", block_idx, shared_image_idx, shared_image[shared_image_idx]);
+            // if(blockIdx.x == 1) printf("block: %d, shared_image_idx[%d]: %f\n", block_idx, shared_image_idx, shared_image[shared_image_idx]);
             shared_image_idx++;
         }
     }
@@ -60,45 +59,30 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
         for(int i = 1; i <= R; ++i){
             int right_idx = global_idx + i;
             shared_image[shared_image_idx] = right_idx >= n ? 1.0f : image[right_idx];
-            if(blockIdx.x == 1) printf("block: %d, shared_image_idx[%d]: %f\n", block_idx, shared_image_idx, shared_image[shared_image_idx]);
+            // if(blockIdx.x == 1) printf("block: %d, shared_image_idx[%d]: %f\n", block_idx, shared_image_idx, shared_image[shared_image_idx]);
             shared_image_idx++;
         }
     }
 
-    
     shared_image[R + local_idx] = image[global_idx];
-    if(blockIdx.x == 1) printf("block: %d, shared_image_idx[%d]: %f\n", block_idx, R + local_idx, shared_image[R + local_idx]);
-
+    // if(blockIdx.x == 1) printf("block: %d, shared_image_idx[%d]: %f\n", block_idx, R + local_idx, shared_image[R + local_idx]);
      __syncthreads();
 
-    // if (shared_image_idx < 0 || shared_image_idx >= n)
-    // {
-    //     // Out-of-bound pixels are assumed to be 1
-    //     shared_image[local_idx] = 1.0f;
-    // }
-    // else
-    // {
-    //     shared_image[local_idx] = image[shared_image_idx];
-    // }
 
-    // // Synchronize all threads in the block after loading shared memory
-    
 
-    // // Compute the stencil operation for this thread if it's within bounds
-    // if (global_idx < n)
-    // {
-    //     float result = 0.0f;
-    //     for (int j = -R; j <= R; ++j)
-    //     {
-    //         int mask_idx = j + R; // Adjust for mask indexing
-    //         int shared_image_idx = local_idx + j;
+    // Compute the stencil operation for this thread if it's within bounds
 
-    //         result += shared_image[shared_image_idx] * shared_mask[mask_idx];
-    //     }
+    float result = 0.0f;
+    for (int j = -R; j <= R; ++j)
+    {
+        int mask_idx = j + R; // Adjust for mask indexing
+        int shared_image_idx = R + local_idx + j;
 
-    //     // Write the result to global memory
-    //     output[global_idx] = result;
-    // }
+        result += shared_image[shared_image_idx] * shared_mask[mask_idx];
+    }
+
+    // Write the result to global memory
+    output[global_idx] = result;
 
     // // Synchronize again to ensure all threads finish before returning
     __syncthreads();

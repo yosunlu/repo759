@@ -80,16 +80,15 @@ int main(int argc, char *argv[])
     cudaMemcpy(d_i, h_i, 10 * sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(d_m, h_m, 5 * sizeof(float), cudaMemcpyHostToDevice);
 
-    // float temp_mask[5]; // Temporary buffer on the host
-    // cudaMemcpy(temp_mask, d_m, 5 * sizeof(float), cudaMemcpyDeviceToHost);
-    // for (int i = 0; i < 5; ++i)
-    // {
-    //     std::cout << temp_mask[i] << std::endl;
-    // }
-
-
     // call the stencil function
     stencil(d_i, d_m, d_o, 10, 2, 5);
+
+    // Copy data from device back to host
+    cudaMemcpy(h_o, d_o, 5 * sizeof(float), cudaMemcpyDeviceToHost);
+    for (int i = 0; i < 10; ++i)
+    {
+        std::cout << h_o[i] << std::endl;
+    }
 
     // Free device and host memory
     cudaFree(d_i);
