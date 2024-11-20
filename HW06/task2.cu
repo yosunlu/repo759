@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     printf("%f\n", h_o[n - 1]);
 
     // Print the amount of time taken to execute the kernel in milliseconds
-    printf("time taken: %f\n", ms);
+    printf("%f\n", ms);
 
     // Free device and host memory
     cudaFree(d_i);
