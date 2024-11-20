@@ -80,7 +80,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
         int shared_image_idx = R + local_idx + j;
 
         result += shared_image[shared_image_idx] * shared_mask[mask_idx];
-        if (global_idx == 0){
+        if (global_idx == 1){
             printf("j: %d, shared_image_idx: %d, shared_image[shared_image_idx]: %f\n", j, shared_image_idx, shared_image[shared_image_idx]);
         }
     }
