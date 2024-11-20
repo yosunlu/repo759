@@ -6,7 +6,6 @@ push:
 	git push
 
 pull:
-	rm *.out
 	rm *.err
 	rm *.txt
 	git reset --hard HEAD
@@ -27,4 +26,9 @@ task2:
 task2_c:
 	chmod +x ./scripts/task2_c.sh
 	sbatch ./scripts/task2_c.sh
+
+cleanup:
+	rm *.out
+	rm *.err
+	rm *.txt
 	
