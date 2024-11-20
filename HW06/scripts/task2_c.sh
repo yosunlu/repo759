@@ -25,10 +25,10 @@ R=128
 for ((i=10; i<=29; i++)); do
     N=$((2**i))
     echo "Running task1 with n=$N and threads_per_block=$THREADS_PER_BLOCK1"
-    ./task1 $N $R $THREADS_PER_BLOCK1 >> task2_${THREADS_PER_BLOCK1}.txt
+    ./task2 $N $R $THREADS_PER_BLOCK1 >> task2_${THREADS_PER_BLOCK1}.txt
 
     echo "Running task1 with n=$N and threads_per_block=$THREADS_PER_BLOCK2"
-    ./task1 $N $R $THREADS_PER_BLOCK2 >> task2_${THREADS_PER_BLOCK2}.txt
+    ./task2 $N $R $THREADS_PER_BLOCK2 >> task2_${THREADS_PER_BLOCK2}.txt
 done
 
 # Clean up
