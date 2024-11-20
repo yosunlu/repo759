@@ -1,4 +1,5 @@
 #include "stencil.cuh"
+#include <cstdio>
 
 // Computes the convolution of image and mask, storing the result in output.
 // Each thread should compute _one_ element of the output matrix.
