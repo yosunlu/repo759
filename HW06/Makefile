@@ -6,8 +6,6 @@ push:
 	git push
 
 pull:
-	rm *.err
-	rm *.txt
 	git reset --hard HEAD
 	git pull
 
@@ -28,9 +26,9 @@ task2_c:
 	sbatch ./scripts/task2_c.sh
 
 cleanup:
-	rm *.out
-	rm *.err
-	rm *.txt
-	rm task1
-	rm task2
+	rm -f *.out
+	rm -f *.err
+	rm -f *.txt
+	rm -f task1
+	rm -f task2
 	
