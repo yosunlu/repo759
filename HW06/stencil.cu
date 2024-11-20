@@ -1,5 +1,6 @@
 #include "stencil.cuh"
 #include <iostream>
+#include <cstdlib>
 #include <cstdio>
 
 // Computes the convolution of image and mask, storing the result in output.
