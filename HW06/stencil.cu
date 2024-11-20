@@ -68,14 +68,11 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     // if(blockIdx.x == 1) printf("block: %d, shared_image_idx[%d]: %f\n", block_idx, R + local_idx, shared_image[R + local_idx]);
      __syncthreads();
 
-
-
     // Compute the stencil operation for this thread if it's within bounds
     float result = 0.0f;
     
-    for (int j = -2; j <= 2; ++j)
+    for (int j = -(int)R; j <= R; ++j)
     {
-        // printf("debug");
         int mask_idx = j + R; // Adjust for mask indexing
         int shared_image_idx = R + local_idx + j;
 
