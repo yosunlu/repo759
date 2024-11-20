@@ -31,4 +31,6 @@ cleanup:
 	rm *.out
 	rm *.err
 	rm *.txt
+	rm task1
+	rm task2
 	
