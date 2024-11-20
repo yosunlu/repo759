@@ -85,6 +85,8 @@ int main(int argc, char *argv[])
     cudaMemcpy(d_m, h_m, 5 * sizeof(float), cudaMemcpyHostToDevice);
 
     
+
+
     // call the stencil function
     stencil(d_i, d_m, d_o, 10, 2, 5);
 
