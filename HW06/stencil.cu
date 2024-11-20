@@ -40,7 +40,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     // say R == 2, then mask has 2 * 2 + 1 elements; only need the first 5 threads of the block to load mask from global to shared
     if (local_idx < 2 * R + 1)
     {
-        printf("inside if: %d\n", local_idx);
+        printf("inside if: %d\n", mask[local_idx]);
         shared_mask[local_idx] = mask[local_idx];
         
     }
