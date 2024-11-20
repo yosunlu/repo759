@@ -102,10 +102,6 @@ __host__ void stencil(const float *image,
     // (2 * R + 1) * sizeof(float) is the size of the mask
     // (threads_per_block + 2 * R) is the element needed 
     unsigned int shared_size = (2 * R + 1) * sizeof(float) + (threads_per_block + 2 * R) * sizeof(float);
-    for (int i = 0; i < 5; ++i)
-    {
-        std::cout << mask[i] << std::endl; 
-    }
 
     // Launch the kernel with the calculated configuration
     stencil_kernel<<<num_blocks, threads_per_block, shared_size>>>(image, mask, output, n, R);
