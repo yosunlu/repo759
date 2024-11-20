@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     }
 
     // Fill host mask with  values
-    for (int i = 0; i < R; ++i)
+    for (int i = 0; i < (int)R; ++i)
     {
         h_m[i] = dist(gen); 
     }

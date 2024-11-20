@@ -8,6 +8,7 @@ push:
 pull:
 	rm *.out
 	rm *.err
+	rm *.txt
 	git reset --hard HEAD
 	git pull
 
