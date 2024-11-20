@@ -9,7 +9,7 @@
 int main(int argc, char *argv[])
 {
 
-   // Allocate memory for host and device arrays
+    // Allocate memory for host and device arrays
     float *h_i, *h_m, *h_o, *d_i, *d_m, *d_o;
 
     if (cudaMallocHost(&h_i, 10 * sizeof(float)) != cudaSuccess)
@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    h_m = (float*)malloc(5 * sizeof(float));
-    if (!h_m)
+    if (cudaMallocHost(&h_m, 5 * sizeof(float)) != cudaSuccess)
     {
-        std::cerr << "Error allocating memory with malloc\n";
+        cudaFreeHost(h_i); // Free previously allocated memory
+        std::cerr << "Error allocating pinned memory for array h_m on host\n";
         return 1;
     }
 
@@ -62,6 +62,11 @@ int main(int argc, char *argv[])
         cudaFree(d_m);
         return 1;
     }
+
+    // Initialize allocated memory to avoid garbage values
+    std::fill(h_i, h_i + 10, 0.0f);
+    std::fill(h_m, h_m + 5, 0.0f);
+    std::fill(h_o, h_o + 10, 0.0f);
 
     // Fill host image with  values
     for (size_t i = 0; i < 10; ++i)
