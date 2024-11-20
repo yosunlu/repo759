@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
     if (argc != 4)
     {
-        std::cerr << "Usage: ./task1 n R threads_per_block, where 2 * R +1 is the length of the mask, and n is the length of the array";
+        std::cerr << "Usage: ./task2 n R threads_per_block, where 2 * R +1 is the length of the mask, and n is the length of the array";
         return 1;
     }
 
@@ -80,20 +80,20 @@ int main(int argc, char *argv[])
     std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
 
     // Fill host image with  values
-    for (size_t i = 0; i < 10; ++i)
+    for (size_t i = 0; i < n; ++i)
     {
         h_i[i] = dist(gen);
     }
 
     // Fill host mask with  values
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < R; ++i)
     {
         h_m[i] = dist(gen); 
     }
 
     // Copy data from host to device
-    cudaMemcpy(d_i, h_i, 10 * sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy(d_m, h_m, 5 * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_i, h_i, n * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_m, h_m, (2 * R + 1) * sizeof(float), cudaMemcpyHostToDevice);
 
 
     // Set up CUDA events for timing
@@ -104,7 +104,6 @@ int main(int argc, char *argv[])
 
     // call the stencil function
     stencil(d_i, d_m, d_o, 10, 2, 5);
-
 
     cudaEventRecord(stop);
     cudaEventSynchronize(stop);

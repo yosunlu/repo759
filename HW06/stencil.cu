@@ -106,8 +106,6 @@ __host__ void stencil(const float *image,
     unsigned int num_blocks = (n + threads_per_block - 1) / threads_per_block;
 
     // Calculate size of shared memory
-    // (2 * R + 1) * sizeof(float) is the size of the mask
-    // (threads_per_block + 2 * R) is the element needed 
     unsigned int shared_size = (2 * R + 1) * sizeof(float) + (threads_per_block + 2 * R) * sizeof(float);
 
     // Launch the kernel with the calculated configuration
