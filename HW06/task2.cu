@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
     // Fill host mask with  values
     for (int i = 0; i < 5; ++i)
     {
-        h_m[i] = -1 * i; 
+        h_m[i] = i; 
         // std::cout << h_m[i] << std::endl; 
     }
 

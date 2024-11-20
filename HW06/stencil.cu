@@ -71,7 +71,6 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
 
 
     // Compute the stencil operation for this thread if it's within bounds
-
     float result = 0.0f;
     for (int j = -R; j <= R; ++j)
     {
