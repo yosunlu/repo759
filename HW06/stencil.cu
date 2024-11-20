@@ -39,7 +39,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     {
         shared_mask[local_idx] = mask[local_idx];
     }
-    printf("currently in block:%d, thread: %d, global thread: %d\n", block_idx, local_idx, global_idx);
+    printf("currently in block:%d, local thread: %d, global thread: %d, mask: %d\n", block_idx, local_idx, global_idx, shared_mask[local_idx]);
 
     // Load corresponding image elements into shared memory
     // say blockDim == 5 (each block has 7 threads) and R == 2; halo_left for the threads in 0th block is -2
