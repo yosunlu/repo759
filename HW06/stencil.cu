@@ -86,6 +86,9 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     }
 
     // Write the result to global memory
+    if (global_idx == 5){
+        printf("%f\n", result);
+    }
     output[global_idx] = result;
 
     // Synchronize again to ensure all threads finish before returning
