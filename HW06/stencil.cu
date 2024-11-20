@@ -71,7 +71,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     // Compute the stencil operation for this thread if it's within bounds
     float result = 0.0f;
     
-    for (int j = -(int)R; j <= R; ++j)
+    for (int j = -(int)R; j <= (int)R; ++j)
     {
         int mask_idx = j + R; // Adjust for mask indexing
         int shared_image_idx = R + local_idx + j;
