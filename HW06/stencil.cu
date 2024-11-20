@@ -48,7 +48,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
         int shared_image_idx = 0;
         for(int i = R; i > 0; --i){
             int left_idx = global_idx - i;
-            shared_image[shared_image_idx] = left_idx < 0 ? 1.0f : image[global_idx];
+            shared_image[shared_image_idx] = left_idx < 0 ? 1.0f : image[R + left_idx];
             printf("block: %d, shared_image_idx[%d]: %f\n", block_idx, shared_image_idx, shared_image[shared_image_idx]);
             shared_image_idx++;
         }
@@ -59,7 +59,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
         int shared_image_idx = blockDim.x + R;
         for(int i = 1; i <= R; ++i){
             int right_idx = global_idx + i;
-            shared_image[shared_image_idx] = right_idx >= n ? 1.0f : image[global_idx];
+            shared_image[shared_image_idx] = right_idx >= n ? 1.0f : image[right_idx];
             printf("block: %d, shared_image_idx[%d]: %f\n", block_idx, shared_image_idx, shared_image[shared_image_idx]);
             shared_image_idx++;
         }
