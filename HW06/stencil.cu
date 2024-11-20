@@ -66,8 +66,8 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     }
 
     
-    // shared_image[R + local_idx] = image[global_idx];
-    // printf("block: %d, shared_image_idx[%d]: %f\n", block_idx, R + local_idx, shared_image[R + local_idx]);
+    shared_image[R + local_idx] = image[global_idx];
+    printf("block: %d, shared_image_idx[%d]: %f\n", block_idx, R + local_idx, shared_image[R + local_idx]);
 
      __syncthreads();
 
