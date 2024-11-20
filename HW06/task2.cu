@@ -85,10 +85,10 @@ int main(int argc, char *argv[])
 
     // Copy data from device back to host
     cudaMemcpy(h_o, d_o, 5 * sizeof(float), cudaMemcpyDeviceToHost);
-    for (int i = 0; i < 10; ++i)
-    {
-        std::cout << h_o[i] << std::endl;
-    }
+    // for (int i = 0; i < 10; ++i)
+    // {
+    //     std::cout << h_o[i] << std::endl;
+    // }
 
     // Free device and host memory
     cudaFree(d_i);
