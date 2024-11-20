@@ -27,12 +27,12 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
 
     // Shared memory allocation for mask and the image block
     extern __shared__ float shared_mem[];
+    // devide the shared array
     float *shared_mask = shared_mem;
     float *shared_image = &shared_mem[2 * R + 1];
 
     // Thread-local index
     int local_idx = threadIdx.x;
-
     int block_idx = blockIdx.x;
 
     // Load mask into shared memory (handled by the first threads)
@@ -40,8 +40,11 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     if (local_idx < 2 * R + 1)
     {
         shared_mask[local_idx] = mask[local_idx];
-        printf("currently in block:%d, local thread: %d, global thread: %d, mask: %d\n", block_idx, local_idx, global_idx, shared_mask[local_idx]);
+        
     }
+    __syncthreads();
+    printf("currently in block: %d, local thread: %d, global thread: %d, mask: %d\n", block_idx, local_idx, global_idx, shared_mask[local_idx]);
+    
     
 
     // Load corresponding image elements into shared memory
@@ -80,7 +83,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     // }
 
     // // Synchronize again to ensure all threads finish before returning
-    __syncthreads();
+    // __syncthreads();
 }
 
 // Makes one call to stencil_kernel with threads_per_block threads per block.
