@@ -72,24 +72,23 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
 
     // Compute the stencil operation for this thread if it's within bounds
     float result = 0.0f;
-    for (int j = -R; j <= R; ++j)
+    
+    for (int j = -2; j <= 2; ++j)
     {
+        // printf("debug");
         int mask_idx = j + R; // Adjust for mask indexing
         int shared_image_idx = R + local_idx + j;
 
         result += shared_image[shared_image_idx] * shared_mask[mask_idx];
-        // if (global_idx == 0){
-        //     printf("j: %d, shared_image_idx: %d, shared_image[shared_image_idx]: %f", j, shared_image_idx, shared_image[shared_image_idx]);
-        // }
-    }
-    if (global_idx == 0){
-        printf("%d", global_idx);
+        if (global_idx == 0){
+            printf("j: %d, shared_image_idx: %d, shared_image[shared_image_idx]: %f\n", j, shared_image_idx, shared_image[shared_image_idx]);
+        }
     }
 
     // Write the result to global memory
     output[global_idx] = result;
 
-    // // Synchronize again to ensure all threads finish before returning
+    // Synchronize again to ensure all threads finish before returning
     __syncthreads();
 }
 
