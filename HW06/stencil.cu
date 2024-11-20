@@ -47,16 +47,13 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     if (local_idx == 0){
         printf("local index: %d\n", local_idx);
         int shared_image_idx = 0;
-        for(int i = R; i > 0; ++i){
+        for(int i = R; i > 0; --i){
             int left_idx = global_idx - i;
             shared_image[shared_image_idx] = left_idx < 0 ? 1.0f : image[global_idx];
             printf("shared_image_idx[%d]: %f\n", left_idx, shared_image[shared_image_idx]);
             shared_image_idx++;
         }
     }
-    __syncthreads();
-
-
 
     // load right halo
     if (local_idx == block_idx - 1){
@@ -69,7 +66,6 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
         }
     }
 
-    __syncthreads();
     
     shared_image[R + local_idx] = image[global_idx];
     printf("shared_image_idx[%d]: %f\n", R + local_idx, shared_image[R + local_idx]);
