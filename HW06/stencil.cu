@@ -34,7 +34,7 @@ __global__ void stencil_kernel(const float *image, const float *mask, float *out
     int block_idx = blockIdx.x;
 
     // Load mask into shared memory (handled by the first threads)
-    // say R == 3, then mask has 2 * 3 + 1 elements; only need the first 7 threads of the block to load mask from global to shared
+    // say R == 2, then mask has 2 * 2 + 1 elements; only need the first 5 threads of the block to load mask from global to shared
     if (local_idx < 2 * R + 1)
     {
         shared_mask[local_idx] = mask[local_idx];
@@ -100,6 +100,10 @@ __host__ void stencil(const float *image,
     // (2 * R + 1) * sizeof(float) is the size of the mask
     // (threads_per_block + 2 * R) is the element needed 
     unsigned int shared_size = (2 * R + 1) * sizeof(float) + (threads_per_block + 2 * R) * sizeof(float);
+    for (int i = 0; i < 5; ++i)
+    {
+        std::cout << mask[i] << std::endl; 
+    }
 
     // Launch the kernel with the calculated configuration
     stencil_kernel<<<num_blocks, threads_per_block, shared_size>>>(image, mask, output, n, R);

@@ -18,13 +18,13 @@ task1_c:
 	sbatch ./scripts/task1_c.sh
 
 output1:
-	cat ./output/task1.err
-	cat ./output/task1.out
+	cat ./task1.err
+	cat ./task1.out
 
 task2:
 	chmod +x ./scripts/task2.sh
 	sbatch ./scripts/task2.sh
 
 output2:
-	cat ./output/task2.err
-	cat ./output/task2.out
+	cat ./task2.err
+	cat ./task2.out
