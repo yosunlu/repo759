@@ -4,8 +4,10 @@ push:
 	git push
 
 pull:
+	make cleanup
 	git reset --hard HEAD
 	git pull
+	
 
 task1:
 	chmod +x ./scripts/task1.sh
