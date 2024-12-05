@@ -6,7 +6,6 @@
 #SBATCH --output="./task1_b.out"
 #SBATCH --error="./task1_b.err"
 #SBATCH --gres=gpu:1
-#SBATCH --constraint=highmem
 
 # Load necessary modules
 module load nvidia/cuda/11.8.0
