@@ -5,7 +5,7 @@
 #include <cuda_runtime.h>
 
 
-void run_matmul_int(unsigned int size, unsigned int block_dim){
+int run_matmul_int(unsigned int size, unsigned int block_dim){
     // generate random variables
     std::random_device rd;
     std::mt19937 gen(rd());
