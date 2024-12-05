@@ -14,6 +14,10 @@ task1:
 	sbatch ./scripts/task1.sh
 
 
+task1_b:
+	chmod +x ./scripts/task1_b.sh
+	sbatch ./scripts/task1_b.sh
+
 cleanup:
 	rm -f *.out
 	rm -f *.err
