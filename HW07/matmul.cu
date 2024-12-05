@@ -12,34 +12,34 @@ __global__ void matmul_kernel_int(const int* A, const int* B, int* C, unsigned i
     int *shared_B = (int *)&shared_A[blockDim.y * blockDim.x]; // Second half for B
 
     // Block and thread indices
-    int bx = blockIdx.x;  // Block column index
-    int by = blockIdx.y;  // Block row index
-    int tx = threadIdx.x; // Thread column index
-    int ty = threadIdx.y; // Thread row index
+    int bx = blockIdx.x;  // Block column index // 0
+    int by = blockIdx.y;  // Block row index // 1
+    int tx = threadIdx.x; // Thread column index // 1
+    int ty = threadIdx.y; // Thread row index // 0
 
     // Compute global row and column for matrix C
-    int row = by * blockDim.y + ty;
-    int col = bx * blockDim.x + tx;
+    int row = by * blockDim.y + ty; // 2
+    int col = bx * blockDim.x + tx; // 1
 
     int Csub = 0; // Accumulator for this thread's result
 
     // Loop over tiles of A and B
-    for (int t = 0; t < (n + blockDim.x - 1) / blockDim.x; ++t) {
+    for (int t = 0; t < (n + blockDim.x - 1) / blockDim.x; ++t) { // t = 0, 1
         // Row and column indices for current tile
-        int aRow = row;
-        int aCol = t * blockDim.x + tx;
-        int bRow = t * blockDim.y + ty;
-        int bCol = col;
+        int aRow = row; // 2
+        int aCol = t * blockDim.x + tx; // 1
+        int bRow = t * blockDim.y + ty; // 0
+        int bCol = col; // 1
 
         // Load tiles into shared memory with boundary checks
         if (aRow < n && aCol < n) {
-            shared_A[ty * blockDim.x + tx] = A[aRow * n + aCol];
+            shared_A[ty * blockDim.x + tx] = A[aRow * n + aCol]; // shared_A[1] = A[9]
         } else {
             shared_A[ty * blockDim.x + tx] = 0; // Pad with zeros
         }
 
         if (bRow < n && bCol < n) {
-            shared_B[ty * blockDim.x + tx] = B[bRow * n + bCol];
+            shared_B[ty * blockDim.x + tx] = B[bRow * n + bCol]; // shared_B[1] = B[1]
         } else {
             shared_B[ty * blockDim.x + tx] = 0; // Pad with zeros
         }
@@ -49,7 +49,7 @@ __global__ void matmul_kernel_int(const int* A, const int* B, int* C, unsigned i
 
         // Compute partial product for this tile
         for (int k = 0; k < blockDim.x; ++k) {
-            Csub += shared_A[ty * blockDim.x + k] * shared_B[k * blockDim.x + tx];
+            Csub += shared_A[ty * blockDim.x + k] * shared_B[k * blockDim.x + tx]; // shared_A[0] * shared_B[1]
         }
 
         // Synchronize threads before loading the next tile
