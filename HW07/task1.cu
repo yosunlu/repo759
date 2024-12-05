@@ -28,8 +28,8 @@ void run_matmul(void (*matmul_func)(const T *, const T *, T *, unsigned int, uns
     cudaMallocHost(&h_c, bytes);
 
     // Initialize matrices with random values
-    initialize_matrix(h_a, size, static_cast<T>(-1), static_cast<T>(1));
-    initialize_matrix(h_b, size, static_cast<T>(-1), static_cast<T>(1));
+    initialize_matrix(h_a, size, static_cast<T>(-10), static_cast<T>(10));
+    initialize_matrix(h_b, size, static_cast<T>(-10), static_cast<T>(10));
 
     // Allocate device memory
     T *d_a, *d_b, *d_c;
