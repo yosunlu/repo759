@@ -147,7 +147,7 @@ __host__ void matmul_2(const float* A, const float* B, float* C, unsigned int n,
     dim3 dimGrid(blockNum, blockNum);
 
     // Compute shared memory size (for two tiles)
-    size_t shared_mem_size = 2 * block_dim * block_dim * sizeof(int);
+    size_t shared_mem_size = 2 * block_dim * block_dim * sizeof(float);
 
     // Launch the kernel
     matmul_kernel_float<<<dimGrid, dimBlock, shared_mem_size>>>(A, B, C, n);
