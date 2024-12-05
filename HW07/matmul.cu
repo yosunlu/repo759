@@ -5,11 +5,11 @@
 #include "matmul.cuh"
 
 // Kernel for tiled matrix multiplication using dynamic shared memory
-__global__ void matmul_kernel_int(const float* A, const float* B, float* C, unsigned int n) {
+__global__ void matmul_kernel_int(const int* A, const int* B, int* C, unsigned int n) {
     // Dynamic shared memory for tiles of A and B
-    extern __shared__ float shared_memory[];
-    float *shared_A = shared_memory; // First half for A
-    float *shared_B = (float *)&shared_A[blockDim.y * blockDim.x]; // Second half for B
+    extern __shared__ int shared_memory[];
+    int *shared_A = shared_memory; // First half for A
+    int *shared_B = (int *)&shared_A[blockDim.y * blockDim.x]; // Second half for B
 
     // Block and thread indices
     int bx = blockIdx.x;  // Block column index
@@ -21,7 +21,7 @@ __global__ void matmul_kernel_int(const float* A, const float* B, float* C, unsi
     int row = by * blockDim.y + ty;
     int col = bx * blockDim.x + tx;
 
-    float Csub = 0.0f; // Accumulator for this thread's result
+    int Csub = 0; // Accumulator for this thread's result
 
     // Loop over tiles of A and B
     for (int t = 0; t < (n + blockDim.x - 1) / blockDim.x; ++t) {
@@ -35,13 +35,13 @@ __global__ void matmul_kernel_int(const float* A, const float* B, float* C, unsi
         if (aRow < n && aCol < n) {
             shared_A[ty * blockDim.x + tx] = A[aRow * n + aCol];
         } else {
-            shared_A[ty * blockDim.x + tx] = 0.0f; // Pad with zeros
+            shared_A[ty * blockDim.x + tx] = 0; // Pad with zeros
         }
 
         if (bRow < n && bCol < n) {
             shared_B[ty * blockDim.x + tx] = B[bRow * n + bCol];
         } else {
-            shared_B[ty * blockDim.x + tx] = 0.0f; // Pad with zeros
+            shared_B[ty * blockDim.x + tx] = 0; // Pad with zeros
         }
 
         // Synchronize threads to ensure all tiles are loaded
@@ -63,7 +63,7 @@ __global__ void matmul_kernel_int(const float* A, const float* B, float* C, unsi
 }
 
 // Host function to invoke the kernel
-__host__ void matmul_1(const float* A, const float* B, float* C, unsigned int n, unsigned int block_dim) {
+__host__ void matmul_1(const int* A, const int* B, int* C, unsigned int n, unsigned int block_dim) {
     int blockNum = (n + block_dim - 1) / block_dim;
 
     // Define grid and block dimensions
@@ -71,7 +71,7 @@ __host__ void matmul_1(const float* A, const float* B, float* C, unsigned int n,
     dim3 dimGrid(blockNum, blockNum);
 
     // Compute shared memory size (for two tiles)
-    size_t shared_mem_size = 2 * block_dim * block_dim * sizeof(float);
+    size_t shared_mem_size = 2 * block_dim * block_dim * sizeof(int);
 
     // Launch the kernel
     matmul_kernel_int<<<dimGrid, dimBlock, shared_mem_size>>>(A, B, C, n);
