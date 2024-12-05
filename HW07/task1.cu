@@ -90,8 +90,8 @@ int main(int argc, char *argv[]) {
 
     // Run tests for matmul_1, matmul_2, and matmul_3
     run_matmul<int>(matmul_1, "matmul_1 (int)", n, block_dim);
-    run_matmul<float>(matmul_2, "matmul_2 (float)", n, block_dim);
-    run_matmul<double>(matmul_3, "matmul_3 (double)", n, block_dim);
+    // run_matmul<float>(matmul_2, "matmul_2 (float)", n, block_dim);
+    // run_matmul<double>(matmul_3, "matmul_3 (double)", n, block_dim);
 
     return 0;
 }
