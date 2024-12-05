@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1 --cpus-per-task=2
 #SBATCH --time=0-00:30:00
 #SBATCH --output="./task1_b.out"
-#SBATCH --error="./task1_b.out"
+#SBATCH --error="./task1_b.err"
 #SBATCH --gres=gpu:1
 
 # Load necessary modules
