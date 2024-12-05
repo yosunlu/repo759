@@ -4,19 +4,8 @@
 #include <random>
 #include <cuda_runtime.h>
 
-int main(int argc, char *argv[])
-{
-    if (argc != 3)
-    {
-        std::cerr << "Usage: ./task1 n block_dim\n";
-        return 1;
-    }
 
-    // Parse arguments
-    unsigned int n = std::atoi(argv[1]);
-    unsigned int size = n * n;
-    unsigned int block_dim = std::atoi(argv[2]);
-
+void run_matmul_int(unsigned int size, unsigned int block_dim){
     // generate random variables
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -115,6 +104,23 @@ int main(int argc, char *argv[])
     cudaFreeHost(h_a);
     cudaFreeHost(h_b);
     cudaFreeHost(h_c);
-    
+}
+
+
+int main(int argc, char *argv[])
+{
+    if (argc != 3)
+    {
+        std::cerr << "Usage: ./task1 n block_dim\n";
+        return 1;
+    }
+
+    // Parse arguments
+    unsigned int n = std::atoi(argv[1]);
+    unsigned int size = n * n;
+    unsigned int block_dim = std::atoi(argv[2]);
+
+    run_matmul_int(size, block_dim);
+
     return 0;
 }
