@@ -17,14 +17,19 @@ void initialize_matrix(T *matrix, size_t size, T min_val, T max_val) {
 
 template <typename T>
 void run_matmul(void (*matmul_func)(const T *, const T *, T *, unsigned int, unsigned int),
-                const char *func_name, unsigned int n, unsigned int block_dim,
-                const T *h_a_shared, const T *h_b_shared) {
+                const char *func_name, unsigned int n, unsigned int block_dim) {
     size_t size = n * n;
     size_t bytes = size * sizeof(T);
 
-    // Allocate host memory for result
-    T *h_c;
+    // Allocate host memory
+    T *h_a, *h_b, *h_c;
+    cudaMallocHost(&h_a, bytes);
+    cudaMallocHost(&h_b, bytes);
     cudaMallocHost(&h_c, bytes);
+
+    // Initialize matrices with random values
+    initialize_matrix(h_a, size, static_cast<T>(-1), static_cast<T>(1));
+    initialize_matrix(h_b, size, static_cast<T>(-1), static_cast<T>(1));
 
     // Allocate device memory
     T *d_a, *d_b, *d_c;
@@ -32,9 +37,9 @@ void run_matmul(void (*matmul_func)(const T *, const T *, T *, unsigned int, uns
     cudaMalloc((void **)&d_b, bytes);
     cudaMalloc((void **)&d_c, bytes);
 
-    // Copy shared input matrices to device
-    cudaMemcpy(d_a, h_a_shared, bytes, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_b, h_b_shared, bytes, cudaMemcpyHostToDevice);
+    // Copy matrices to device
+    cudaMemcpy(d_a, h_a, bytes, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_b, h_b, bytes, cudaMemcpyHostToDevice);
 
     // Set up CUDA events for timing
     cudaEvent_t start, stop;
@@ -64,6 +69,8 @@ void run_matmul(void (*matmul_func)(const T *, const T *, T *, unsigned int, uns
     cudaFree(d_a);
     cudaFree(d_b);
     cudaFree(d_c);
+    cudaFreeHost(h_a);
+    cudaFreeHost(h_b);
     cudaFreeHost(h_c);
 
     // Destroy CUDA events
@@ -80,35 +87,11 @@ int main(int argc, char *argv[]) {
     // Parse arguments
     unsigned int n = std::atoi(argv[1]);
     unsigned int block_dim = std::atoi(argv[2]);
-    size_t size = n * n;
-
-    // Allocate shared input matrices
-    float *h_a_float, *h_b_float;
-    cudaMallocHost(&h_a_float, size * sizeof(float));
-    cudaMallocHost(&h_b_float, size * sizeof(float));
-
-    // Initialize shared matrices with random values
-    initialize_matrix(h_a_float, size, -1.0f, 1.0f);
-    initialize_matrix(h_b_float, size, -1.0f, 1.0f);
-
-    // Convert float matrices to integer for matmul_1
-    int *h_a_int = new int[size];
-    int *h_b_int = new int[size];
-    for (size_t i = 0; i < size; ++i) {
-        h_a_int[i] = static_cast<int>(h_a_float[i]);
-        h_b_int[i] = static_cast<int>(h_b_float[i]);
-    }
 
     // Run tests for matmul_1, matmul_2, and matmul_3
-    run_matmul<int>(matmul_1, "matmul_1 (int)", n, block_dim, h_a_int, h_b_int);
-    run_matmul<float>(matmul_2, "matmul_2 (float)", n, block_dim, h_a_float, h_b_float);
-    run_matmul<double>(matmul_3, "matmul_3 (double)", n, block_dim, h_a_float, h_b_float);
-
-    // Free shared input matrices
-    delete[] h_a_int;
-    delete[] h_b_int;
-    cudaFreeHost(h_a_float);
-    cudaFreeHost(h_b_float);
+    run_matmul<int>(matmul_1, "matmul_1 (int)", n, block_dim);
+    run_matmul<float>(matmul_2, "matmul_2 (float)", n, block_dim);
+    run_matmul<double>(matmul_3, "matmul_3 (double)", n, block_dim);
 
     return 0;
 }
