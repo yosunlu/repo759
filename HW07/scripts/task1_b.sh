@@ -6,6 +6,7 @@
 #SBATCH --output="./task1_b.out"
 #SBATCH --error="./task1_b.err"
 #SBATCH --gres=gpu:1
+#SBATCH --constraint=highmem
 
 # Load necessary modules
 module load nvidia/cuda/11.8.0
@@ -18,7 +19,7 @@ nvcc task1.cu matmul.cu -Xcompiler -O3 -Xcompiler -Wall -Xptxas -O3 -std=c++17 -
 for ((i=5; i<=14; i++)); do
     n=$((2**i))
     echo "Running task1 for n = $n" >> task1_b.out
-    ./task1 $n 64 >> task1_b.out
+    ./task1 $n 32 >> task1_b.out
     echo "Finished task1 for n = $n" >> task1_b.out
 done
 
