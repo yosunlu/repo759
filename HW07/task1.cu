@@ -327,7 +327,7 @@ int main(int argc, char *argv[])
     unsigned int size = n * n;
     unsigned int block_dim = std::atoi(argv[2]);
 
-    // run_matmul_int(n, size, block_dim);
+    run_matmul_int(n, size, block_dim);
     // run_matmul_float(n, size, block_dim);
     // run_matmul_double(n, size, block_dim);
 
