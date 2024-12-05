@@ -104,6 +104,8 @@ int run_matmul_int(unsigned int n, unsigned int size, unsigned int block_dim){
     cudaFreeHost(h_a);
     cudaFreeHost(h_b);
     cudaFreeHost(h_c);
+
+    return 0;
 }
 
 
