@@ -4,94 +4,117 @@
 #include <random>
 #include <cuda_runtime.h>
 
-template <typename T>
-void initialize_matrix(T *matrix, size_t size, T min_val, T max_val) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dist(min_val, max_val);
-
-    for (size_t i = 0; i < size; ++i) {
-        matrix[i] = static_cast<T>(dist(gen));
-    }
-}
-
-template <typename T>
-void run_matmul(void (*matmul_func)(const T *, const T *, T *, unsigned int, unsigned int),
-                const char *func_name, unsigned int n, unsigned int block_dim) {
-    size_t size = n * n;
-    size_t bytes = size * sizeof(T);
-
-    // Allocate host memory
-    T *h_a, *h_b, *h_c;
-    cudaMallocHost(&h_a, bytes);
-    cudaMallocHost(&h_b, bytes);
-    cudaMallocHost(&h_c, bytes);
-
-    // Initialize matrices with random values
-    initialize_matrix(h_a, size, static_cast<T>(-10), static_cast<T>(10));
-    initialize_matrix(h_b, size, static_cast<T>(-10), static_cast<T>(10));
-
-    // Allocate device memory
-    T *d_a, *d_b, *d_c;
-    cudaMalloc((void **)&d_a, bytes);
-    cudaMalloc((void **)&d_b, bytes);
-    cudaMalloc((void **)&d_c, bytes);
-
-    // Copy matrices to device
-    cudaMemcpy(d_a, h_a, bytes, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_b, h_b, bytes, cudaMemcpyHostToDevice);
-
-    // Set up CUDA events for timing
-    cudaEvent_t start, stop;
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
-
-    // Call matmul function and measure time
-    cudaEventRecord(start);
-    matmul_func(d_a, d_b, d_c, n, block_dim);
-    cudaEventRecord(stop);
-    cudaEventSynchronize(stop);
-
-    // Get elapsed time
-    float ms;
-    cudaEventElapsedTime(&ms, start, stop);
-
-    // Copy result back to host
-    cudaMemcpy(h_c, d_c, bytes, cudaMemcpyDeviceToHost);
-
-    // Print results
-    std::cout << "Results for " << func_name << ":\n";
-    std::cout << "First element of C: " << h_c[0] << "\n";
-    std::cout << "Last element of C: " << h_c[size - 1] << "\n";
-    std::cout << "Time taken: " << ms << " ms\n";
-
-    // Free memory
-    cudaFree(d_a);
-    cudaFree(d_b);
-    cudaFree(d_c);
-    cudaFreeHost(h_a);
-    cudaFreeHost(h_b);
-    cudaFreeHost(h_c);
-
-    // Destroy CUDA events
-    cudaEventDestroy(start);
-    cudaEventDestroy(stop);
-}
-
-int main(int argc, char *argv[]) {
-    if (argc != 3) {
+int main(int argc, char *argv[])
+{
+    if (argc != 3)
+    {
         std::cerr << "Usage: ./task1 n block_dim\n";
         return 1;
     }
 
     // Parse arguments
     unsigned int n = std::atoi(argv[1]);
+    unsigned int size = n * n;
     unsigned int block_dim = std::atoi(argv[2]);
 
-    // Run tests for matmul_1, matmul_2, and matmul_3
-    run_matmul<int>(matmul_1, "matmul_1 (int)", n, block_dim);
-    // run_matmul<float>(matmul_2, "matmul_2 (float)", n, block_dim);
-    // run_matmul<double>(matmul_3, "matmul_3 (double)", n, block_dim);
+    // generate random variables
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(-10, 10);
 
+    // Allocate memory for host and device arrays
+    int *h_a, *h_b, *h_c, *d_a, *d_b, *d_c;
+    if (cudaMallocHost(&h_a, size * sizeof(int)) != cudaSuccess)
+    {
+        std::cerr << "Error allocating pinned memory for array h_a on host\n";
+        return 1;
+    }
+    if (cudaMallocHost(&h_b, size * sizeof(int)) != cudaSuccess)
+    {
+        std::cerr << "Error allocating pinned memory for array h_b on host\n";
+        cudaFreeHost(h_a); // Free previously allocated memory
+        return 1;
+    }
+    if (cudaMallocHost(&h_c, size * sizeof(int)) != cudaSuccess)
+    {
+        std::cerr << "Error allocating pinned memory for array h_b on host\n";
+        cudaFreeHost(h_a); // Free previously allocated memory
+        cudaFreeHost(h_b);
+        return 1;
+    }
+    if (cudaMalloc((void **)&d_a, size * sizeof(int)) != cudaSuccess)
+    {
+        std::cerr << "Error allocating memory for array d_a on device\n";
+        cudaFreeHost(h_a);
+        cudaFreeHost(h_b);
+        cudaFreeHost(h_c);
+        return 1;
+    }
+    if (cudaMalloc((void **)&d_b, size * sizeof(int)) != cudaSuccess)
+    {
+        std::cerr << "Error allocating memory for array d_b on device\n";
+        cudaFreeHost(h_a);
+        cudaFreeHost(h_b);
+        cudaFreeHost(h_c);
+        cudaFree(d_a);
+        return 1;
+    }
+    if (cudaMalloc((void **)&d_c, size * sizeof(int)) != cudaSuccess)
+    {
+        std::cerr << "Error allocating memory for array d_c on device\n";
+        cudaFreeHost(h_a);
+        cudaFreeHost(h_b);
+        cudaFreeHost(h_c);
+        cudaFree(d_a);
+        cudaFree(d_b);
+        return 1;
+    }
+
+    // Fill host arrays with random values
+    for (size_t i = 0; i < size; ++i)
+    {
+        h_a[i] = dist(gen);
+        h_b[i] = dist(gen);
+    }
+
+    // Copy data from host to device
+    cudaMemcpy(d_a, h_a, size * sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_b, h_b, size * sizeof(int), cudaMemcpyHostToDevice);
+
+    // Set up CUDA events for timing
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
+
+    // Run tests for matmul_1, matmul_2, and matmul_3
+    matmul_1(d_a, d_b, d_c, n, block_dim);
+
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+
+    // Get the elapsed time in milliseconds
+    float ms;
+    cudaEventElapsedTime(&ms, start, stop);
+
+    // Copy the result from device back to host
+    cudaMemcpy(h_c, d_c, size * sizeof(int), cudaMemcpyDeviceToHost);
+
+    // Print the last element of the resulting matrix.
+    printf("first element: %d\n", h_c[0]);
+
+    // Print the last element of the resulting matrix.
+    printf("last element: %d\n", h_c[size - 1]);
+
+    // Print the amount of time taken to execute the kernel in milliseconds
+    printf("time taken: %f\n", ms);
+
+    cudaFree(d_a);
+    cudaFree(d_b);
+    cudaFree(d_c);
+    cudaFreeHost(h_a);
+    cudaFreeHost(h_b);
+    cudaFreeHost(h_c);
+    
     return 0;
 }

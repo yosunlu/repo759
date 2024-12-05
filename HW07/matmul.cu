@@ -1,85 +1,81 @@
+#include <cuda.h>
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
 #include "matmul.cuh"
 
-#define TILE_SIZE 16
+// Kernel for tiled matrix multiplication using dynamic shared memory
+__global__ void matmul_kernel_int(const float* A, const float* B, float* C, unsigned int n) {
+    // Dynamic shared memory for tiles of A and B
+    extern __shared__ float shared_memory[];
+    float *shared_A = shared_memory; // First half for A
+    float *shared_B = (float *)&shared_A[blockDim.y * blockDim.x]; // Second half for B
 
-// Kernel for Tiled Matrix Multiplication
-template <typename T>
-__global__ void matmul_kernel(const T* A, const T* B, T* C, unsigned int n) {
     // Block and thread indices
-    unsigned int bx = blockIdx.x; // B (and C) tile column index
-    unsigned int by = blockIdx.y; // A (and C) tile row index
-    unsigned int tx = threadIdx.x; // Tile column index
-    unsigned int ty = threadIdx.y; // Tile row index
+    int bx = blockIdx.x;  // Block column index
+    int by = blockIdx.y;  // Block row index
+    int tx = threadIdx.x; // Thread column index
+    int ty = threadIdx.y; // Thread row index
 
-    // Sub-matrix C element computed by this thread
-    T Csub = 0;
+    // Compute global row and column for matrix C
+    int row = by * blockDim.y + ty;
+    int col = bx * blockDim.x + tx;
 
-    // Shared memory tiles for A and B
-    __shared__ T As[TILE_SIZE][TILE_SIZE];
-    __shared__ T Bs[TILE_SIZE][TILE_SIZE];
+    float Csub = 0.0f; // Accumulator for this thread's result
 
-    // Iterate over all tiles required to compute Csub
-    for (unsigned int phase = 0; phase < (n + TILE_SIZE - 1) / TILE_SIZE; ++phase) {
-        // Load the A and B tiles into shared memory
-        unsigned int aRow = by * TILE_SIZE + ty;
-        unsigned int aCol = phase * TILE_SIZE + tx;
-        unsigned int bRow = phase * TILE_SIZE + ty;
-        unsigned int bCol = bx * TILE_SIZE + tx;
+    // Loop over tiles of A and B
+    for (int t = 0; t < (n + blockDim.x - 1) / blockDim.x; ++t) {
+        // Row and column indices for current tile
+        int aRow = row;
+        int aCol = t * blockDim.x + tx;
+        int bRow = t * blockDim.y + ty;
+        int bCol = col;
 
+        // Load tiles into shared memory with boundary checks
         if (aRow < n && aCol < n) {
-            As[ty][tx] = A[aRow * n + aCol];
+            shared_A[ty * blockDim.x + tx] = A[aRow * n + aCol];
         } else {
-            As[ty][tx] = 0;
+            shared_A[ty * blockDim.x + tx] = 0.0f; // Pad with zeros
         }
 
         if (bRow < n && bCol < n) {
-            Bs[ty][tx] = B[bRow * n + bCol];
+            shared_B[ty * blockDim.x + tx] = B[bRow * n + bCol];
         } else {
-            Bs[ty][tx] = 0;
+            shared_B[ty * blockDim.x + tx] = 0.0f; // Pad with zeros
         }
 
-        // Synchronize threads to ensure all elements are loaded
+        // Synchronize threads to ensure all tiles are loaded
         __syncthreads();
 
         // Compute partial product for this tile
-        for (unsigned int k = 0; k < TILE_SIZE; ++k) {
-            Csub += As[ty][k] * Bs[k][tx];
+        for (int k = 0; k < blockDim.x; ++k) {
+            Csub += shared_A[ty * blockDim.x + k] * shared_B[k * blockDim.x + tx];
         }
 
-        // Synchronize threads before loading the next tiles
+        // Synchronize threads before loading the next tile
         __syncthreads();
     }
 
-    // Write the computed value to C
-    unsigned int cRow = by * TILE_SIZE + ty;
-    unsigned int cCol = bx * TILE_SIZE + tx;
-    if (cRow < n && cCol < n) {
-        C[cRow * n + cCol] = Csub;
+    // Write the computed value to global memory with boundary check
+    if (row < n && col < n) {
+        C[row * n + col] = Csub;
     }
 }
 
-// Host functions to invoke the kernel
-template <typename T>
-__host__ void matmul_template(const T* A, const T* B, T* C, unsigned int n, unsigned int block_dim) {
-    // Configure grid and block dimensions
-    dim3 dimBlock(block_dim, block_dim);
-    dim3 dimGrid((n + block_dim - 1) / block_dim, (n + block_dim - 1) / block_dim);
+// Host function to invoke the kernel
+__host__ void matmul_1(const float* A, const float* B, float* C, unsigned int n, unsigned int block_dim) {
+    int blockNum = (n + block_dim - 1) / block_dim;
 
-    // Launch kernel
-    matmul_kernel<<<dimGrid, dimBlock>>>(A, B, C, n);
+    // Define grid and block dimensions
+    dim3 dimBlock(block_dim, block_dim);
+    dim3 dimGrid(blockNum, blockNum);
+
+    // Compute shared memory size (for two tiles)
+    size_t shared_mem_size = 2 * block_dim * block_dim * sizeof(float);
+
+    // Launch the kernel
+    matmul_kernel_int<<<dimGrid, dimBlock, shared_mem_size>>>(A, B, C, n);
 
     // Synchronize device
     cudaDeviceSynchronize();
-}
-
-__host__ void matmul_1(const int* A, const int* B, int* C, unsigned int n, unsigned int block_dim) {
-    matmul_template<int>(A, B, C, n, block_dim);
-}
-
-__host__ void matmul_2(const float* A, const float* B, float* C, unsigned int n, unsigned int block_dim) {
-    matmul_template<float>(A, B, C, n, block_dim);
-}
-
-__host__ void matmul_3(const double* A, const double* B, double* C, unsigned int n, unsigned int block_dim) {
-    matmul_template<double>(A, B, C, n, block_dim);
 }
