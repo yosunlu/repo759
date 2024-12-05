@@ -76,8 +76,8 @@ __global__ void matmul_kernel_int(const int *A, const int *B, int *C, unsigned i
 __global__ void matmul_kernel_float(const float *A, const float *B, float *C, unsigned int n)
 {
     // Dynamic shared memory for tiles of A and B
-    extern __shared__ float shared_memory[];
-    float *shared_A = shared_memory;                               // First half for A
+    extern __shared__ float float_shared_memory[];
+    float *shared_A = float_shared_memory;                               // First half for A
     float *shared_B = (float *)&shared_A[blockDim.y * blockDim.x]; // Second half for B
 
     // Block and thread indices
@@ -144,8 +144,8 @@ __global__ void matmul_kernel_float(const float *A, const float *B, float *C, un
 __global__ void matmul_kernel_double(const double *A, const double *B, double *C, unsigned int n)
 {
     // Dynamic shared memory for tiles of A and B
-    extern __shared__ double shared_memory[];
-    double *shared_A = shared_memory;                                // First half for A
+    extern __shared__ double double_shared_memory[];
+    double *shared_A = double_shared_memory;                                // First half for A
     double *shared_B = (double *)&shared_A[blockDim.y * blockDim.x]; // Second half for B
 
     // Block and thread indices
