@@ -84,10 +84,10 @@ int main(int argc, char *argv[])
     cudaMemcpy(h_output, d_output, num_blocks * sizeof(float), cudaMemcpyDeviceToHost);
 
     // Print the resulting sum
-    printf("Resulting sum: %f\n", h_output[0]);
+    printf("%f\n", h_output[0]);
 
     // Print the time taken
-    printf("Time taken: %f ms\n", ms);
+    printf("%f\n", ms);
 
     // Free device and host memory
     cudaFree(d_input);
