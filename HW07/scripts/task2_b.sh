@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-#SBATCH --job-name=task2
+#SBATCH --job-name=task2_b
 #SBATCH -p instruction
-#SBATCH --ntasks=1 --cpus-per-task=2
-#SBATCH --time=0-04:00:00
+#SBATCH --ntasks=1 --cpus-per-task=2_b
+#SBATCH --time=0-00:30:00
 #SBATCH --output="./task2.out"
 #SBATCH --error="./task2.err"
 #SBATCH --gres=gpu:1

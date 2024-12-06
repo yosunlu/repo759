@@ -297,11 +297,11 @@ int run_matmul_double(unsigned int n, unsigned int size, unsigned int block_dim)
     cudaMemcpy(h_c, d_c, size * sizeof(double), cudaMemcpyDeviceToHost);
 
     // Print the first and last elements of the resulting matrix
-    printf("First element: %f\n", h_a[0]);
-    printf("Last element: %f\n", h_a[size - 1]);
+    printf("%f\n", h_a[0]);
+    printf("%f\n", h_a[size - 1]);
 
     // Print the amount of time taken to execute the kernel
-    printf("Time taken: %f ms\n", ms);
+    printf("%f ms\n", ms);
 
     // Cleanup
     cudaFree(d_a);
@@ -328,8 +328,8 @@ int main(int argc, char *argv[])
     unsigned int block_dim = std::atoi(argv[2]);
 
     run_matmul_int(n, size, block_dim);
-    // run_matmul_float(n, size, block_dim);
-    // run_matmul_double(n, size, block_dim);
+    run_matmul_float(n, size, block_dim);
+    run_matmul_double(n, size, block_dim);
 
     return 0;
 }
