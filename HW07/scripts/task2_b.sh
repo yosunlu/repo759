@@ -18,7 +18,7 @@ nvcc task2.cu reduce.cu -Xcompiler -O3 -Xcompiler -Wall -Xptxas -O3 -std=c++17 -
 for ((i=10; i<=29; i++)); do
     n=$((2**i))
     echo "Running task2 for n = $n with threads_per_block=256" >> task2_b.out
-    ./task2 $n 256 >> task2.out
+    ./task2 $n 256 >> task2_b.out
     echo "Finished task2 for n = $n with threads_per_block=256" >> task2_b.out
 done
 
@@ -26,7 +26,7 @@ done
 for ((i=10; i<=29; i++)); do
     n=$((2**i))
     echo "Running task2 for n = $n with threads_per_block=1024" >> task2_b.out
-    ./task2 $n 1024 >> task2.out
+    ./task2 $n 1024 >> task2_b.out
     echo "Finished task2 for n = $n with threads_per_block=1024" >> task2_b.out
 done
 
