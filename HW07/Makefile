@@ -8,15 +8,17 @@ pull:
 	git reset --hard HEAD
 	git pull
 	
-
 task1:
 	chmod +x ./scripts/task1.sh
 	sbatch ./scripts/task1.sh
 
-
 task1_b:
 	chmod +x ./scripts/task1_b.sh
 	sbatch ./scripts/task1_b.sh
+
+task2:
+	chmod +x ./scripts/task2.sh
+	sbatch ./scripts/task2.sh
 
 cleanup:
 	rm -f *.out
