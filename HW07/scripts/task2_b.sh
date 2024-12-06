@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=task2_b
 #SBATCH -p instruction
-#SBATCH --ntasks=1 --cpus-per-task=2_b
+#SBATCH --ntasks=1 --cpus-per-task=2
 #SBATCH --time=0-00:30:00
-#SBATCH --output="./task2.out"
-#SBATCH --error="./task2.err"
+#SBATCH --output="./task2_b.out"
+#SBATCH --error="./task2_b.err"
 #SBATCH --gres=gpu:1
 
 # Load necessary modules
