@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1 --cpus-per-task=2
 #SBATCH --time=0-00:10:00
 #SBATCH --output="./task2.out"
-#SBATCH --error="./task.err"
+#SBATCH --error="./task2.err"
 #SBATCH --gres=gpu:1
 
 module load nvidia/cuda/11.8.0
