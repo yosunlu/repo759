@@ -20,6 +20,10 @@ task2:
 	chmod +x ./scripts/task2.sh
 	sbatch ./scripts/task2.sh
 
+task2_b:
+	chmod +x ./scripts/task2_b.sh
+	sbatch ./scripts/task2_b.sh
+
 cleanup:
 	rm -f *.out
 	rm -f *.err
